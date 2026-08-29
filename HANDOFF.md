@@ -126,27 +126,58 @@ Loaded unpacked and driven over CDP/RDP against the live API, not just built:
   it needs a real Google account.
 - **The packaged builds**, not just the source tree: `dist/chrome` loads and
   reaches the API, and `dist/firefox` installs under the published add-on GUID
-  with zero warnings. All 250 preview assets resolve from inside the package.
+  with zero warnings. All preview assets resolve from inside the package.
+- **Re-run in full after the cleanup**, against a throwaway Supabase account that
+  was deleted afterwards: sign in, generate, preview, variations, image analysis,
+  weekly prompts, the Style Codes panel, logout — plus docs.html, whose 41 images
+  all load.
 
-## Cleanup done, and deliberately not done
+## Cleanup
 
-Removed: `scripts/style-refs-fullscreen.js` and its CSS (dead — loaded by no HTML
-and in neither manifest), the `testRatePopup` button and `forceRatePopupTest`
+**Files removed:** `scripts/style-refs-fullscreen.js` and its CSS (loaded by no
+HTML, in neither manifest), the `testRatePopup` button and `forceRatePopupTest`
 (marked "remove before production" and shipped anyway), and
-`previews/styles/New Text Document.py` — a stray filename-listing script that has
-been going out to users inside the package. `screenshots/` is now excluded from
-the build, which is 5 MB of store listing images that were being shipped too.
+`previews/styles/New Text Document.py` — a stray filename-listing script that had
+been going out to users inside the package.
 
-**Left alone on purpose:** `popup.js` declares `cleanupOldPreviews`,
-`displayCachedPreview`, `hexToRgb` and `updateAllQuickAddButtons` twice each. The
-later declaration wins, so the earlier ones are inert — but two of the pairs have
-*different* bodies, and proving they share a scope in a 388 KB file written at
-column zero inside a `DOMContentLoaded` callback is not something to do the day
-of a release. They are harmless; they are also a real thread to pull later.
+**Dead code in popup.js.** Four declarations were shadowed by later ones of the
+same name; fourteen functions were referenced by nothing, several left over from
+the removed Style Codes feature. Removing them cascades — two rounds were needed
+before nothing was unreferenced. `cleanupOldPreviews` had also been registered on
+two hourly intervals, because the shadowed copy brought its own `setInterval`.
+The file is now 357 KB, from 388 KB.
+
+Boundaries came from real brace matching, not indentation: this file's nesting
+and its indentation disagree, everything sits inside one `DOMContentLoaded`
+callback, and `hidePreview` turned out to be **two different scopes** — both live,
+both kept. Anything doing this again should check scope the same way rather than
+trusting the column a declaration starts in.
+
+**Assets.** Six files were unreachable by any code path, including a 1.5 MB
+teaser image belonging to the removed feature. Reachability had to model both
+ways previews are named: literal filenames in the option tables, *and* paths
+built at runtime as `previews/${folder}/${value.replace(/_/g,'-')}-preview.png`.
+Seven files that looked unused are reached the second way and were kept — a
+filename-only search would have deleted them.
+
+**The docs page** described a Style References tab that no longer exists, and now
+points at the website.
+
+**The build now verifies itself.** `screenshots/` looked like store-listing
+material and was excluded; docs.html embeds 28 of them, so that shipped a docs
+page of broken images. The build checks that every local `src`/`href`/`url()` in
+the packaged HTML, CSS and JS resolves inside the package, and fails if one does
+not. Confirmed to fail on a deliberately broken reference, so it is not passing
+vacuously.
 
 ## Still open
 
-- **`popup.js` is still one 388 KB file.** Untouched beyond the call sites above.
+- **`popup.js` is still one 357 KB file.** It cannot simply be split: everything
+  lives inside a single `DOMContentLoaded` callback, so moving code to another
+  file changes what it closes over. The data tables (styles, lighting, camera
+  angles, greetings — several thousand lines of pure literals) *could* be lifted
+  into a file loaded before it, since a script-scoped `const` stays visible
+  inside the callback. That is the next thread worth pulling.
 - **Chrome 151 load not done.** The verification browser was Chrome for Testing
   131, because current Chrome has removed `--load-extension`. Loading it into
   everyday Chrome means the `chrome://extensions` UI.
