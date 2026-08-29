@@ -52,14 +52,37 @@ to implicit fragment tokens if `/authorize` returns those instead.
 
 Two things make that work, and both are easy to break:
 
-1. `manifest.json` carries a `key`, which pins the extension ID to
-   `fomjebmdfcgefaicpalaecgkmelfefcg`. The private half is `extension-key.pem`,
-   which is gitignored — **keep it**. Without it the ID changes and the redirect
-   below no longer matches.
-2. Supabase's redirect allow-list was extended (Auth → URL Configuration) with
-   `https://fomjebmdfcgefaicpalaecgkmelfefcg.chromiumapp.org/**` and
-   `https://*.extensions.allizom.org/**`. The wildcard covers Firefox, whose
+1. `manifest.json` carries a `key` — the **published extension's own public key**,
+   recovered from the signed CRX on the Web Store. It pins an unpacked local load
+   to `hehieakgdbakdajfpekgmfckplcjmgcf`, the published ID, so development and
+   production share one identity and one redirect URL. Do not regenerate it: a
+   new key means a new ID, and the allow-list entry below stops matching with no
+   obvious symptom beyond Google sign-in failing.
+
+   (A CRX carries several signature proofs. The publisher's is the one whose
+   SHA-256 matches `crx_id` in the header's `signed_header_data` — not simply the
+   first, which is Google's.)
+
+2. Supabase's redirect allow-list (Auth → URL Configuration) carries
+   `https://hehieakgdbakdajfpekgmfckplcjmgcf.chromiumapp.org/**` and
+   `https://*.extensions.allizom.org/**`, alongside the pre-existing
+   promptcatalyst.ai and localhost entries. The wildcard covers Firefox, whose
    redirect URL is a per-install UUID and so cannot be listed exactly.
+
+## Identity, and where the versions stand
+
+| | Value |
+|---|---|
+| Chrome Web Store ID | `hehieakgdbakdajfpekgmfckplcjmgcf` |
+| Firefox add-on GUID | `promptcatalyst@catalystmedia.ai` |
+| Published version | 1.9.2.1 (both stores) |
+| This tree | 1.9.3 |
+
+The local manifest said 1.8.2 while the stores had 1.9.2.1, which looked like the
+source being behind. It was not: the published package was extracted and compared
+file by file, and the code matches — only the version had never been bumped
+locally. The name was `Prompt Catalyst DEV`, which would have renamed the store
+listing on upload, and is now `Prompt Catalyst`.
 
 ## Credit limits: 402, keyed on `code`
 
@@ -96,26 +119,40 @@ Loaded unpacked and driven over CDP/RDP against the live API, not just built:
 - **Firefox 154** (temporary add-on): installs with **zero manifest warnings**,
   popup loads, all three modules present, `/credits` and `/api/weekly-prompts`
   both 200, and the background event page answers `runtime.sendMessage`.
-- **Google sign-in**: the redirect URL Chrome generates matches the allow-list
-  entry exactly, Supabase's `/authorize` 302s to Google carrying it, and the PKCE
-  grant is supported. The consent round-trip itself was not driven — it needs a
-  real Google account.
+- **Google sign-in**: the redirect URL the extension generates is
+  `https://hehieakgdbakdajfpekgmfckplcjmgcf.chromiumapp.org/`, matching the
+  allow-list entry exactly; Supabase's `/authorize` 302s to Google carrying it,
+  and the PKCE grant is supported. The consent round-trip itself was not driven —
+  it needs a real Google account.
+- **The packaged builds**, not just the source tree: `dist/chrome` loads and
+  reaches the API, and `dist/firefox` installs under the published add-on GUID
+  with zero warnings. All 250 preview assets resolve from inside the package.
+
+## Cleanup done, and deliberately not done
+
+Removed: `scripts/style-refs-fullscreen.js` and its CSS (dead — loaded by no HTML
+and in neither manifest), the `testRatePopup` button and `forceRatePopupTest`
+(marked "remove before production" and shipped anyway), and
+`previews/styles/New Text Document.py` — a stray filename-listing script that has
+been going out to users inside the package. `screenshots/` is now excluded from
+the build, which is 5 MB of store listing images that were being shipped too.
+
+**Left alone on purpose:** `popup.js` declares `cleanupOldPreviews`,
+`displayCachedPreview`, `hexToRgb` and `updateAllQuickAddButtons` twice each. The
+later declaration wins, so the earlier ones are inert — but two of the pairs have
+*different* bodies, and proving they share a scope in a 388 KB file written at
+column zero inside a `DOMContentLoaded` callback is not something to do the day
+of a release. They are harmless; they are also a real thread to pull later.
 
 ## Still open
 
-- **Firefox needs a staging step to package.** Firefox reads `manifest.json`,
-  which is the Chrome one. `manifest.firefox.json` has to be copied over it into
-  a build directory. Done by hand for the verification above; there is no script
-  for it yet.
-- **`scripts/style-refs-fullscreen.js` is dead.** No HTML loads it and it is not
-  in either manifest. It still contains old `catalystmedia.ai` URLs. Deleting it
-  is cleanup, not a fix — nothing runs it.
+- **`popup.js` is still one 388 KB file.** Untouched beyond the call sites above.
+- **Chrome 151 load not done.** The verification browser was Chrome for Testing
+  131, because current Chrome has removed `--load-extension`. Loading it into
+  everyday Chrome means the `chrome://extensions` UI.
 - **The Style Codes tab is now an explanation.** The API has no
   `/api/style-references`; the tab says the codes live on the website and links
   there rather than calling a host that is gone.
-- **`popup.js` is still one 398 KB file.** Untouched beyond the call sites above.
-- **Chrome 151 load not done.** The verification browser was Chrome for Testing
-  131. Loading it into current Chrome means the `chrome://extensions` UI.
 
 ## Related
 
