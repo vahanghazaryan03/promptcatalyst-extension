@@ -1,0 +1,9 @@
+# Normalise line endings, so a future checkout on another machine does not show
+# every text file as entirely rewritten.
+* text=auto eol=lf
+
+# Binary assets: never touched, never diffed as text.
+*.png binary
+*.webp binary
+*.jpg binary
+*.zip binary

@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prompt Catalyst Documentation</title>
+  
+
+    <link rel="stylesheet" href="styles/docs.css">
+</head>
+<body>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+</button>
+    <div class="docs-container">
+        <header class="docs-header">
+            <div class="titleelm">
+                 <img src="screenshots/msct.png"  width="80" height="80" class="msct">
+            <h1>Prompt Catalyst Documentation</h1>
+             
+            </div>
+            <p>Your comprehensive guide to mastering AI prompt engineering</p>
+        </header>
+
+   <nav class="docs-nav">
+        <ul>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#core-features">Core Features</a></li>
+           
+            <li><a href="#purposes">Purposes</a></li> 
+             <li><a href="#image-to-prompt">Image to Prompt</a></li>
+            <li><a href="#creativity-value">Creativity Value</a></li>
+             <li><a href="#midjourney-parameters">Midjourney Parameter Handling</a></li>
+            <li><a href="#variations-button">Variations Button</a></li>
+            <li><a href="#extend-shorten">Extend and Shorten Buttons</a></li>
+            <li><a href="#preview-button">Preview Button</a></li>
+            <li><a href="#video-mode">Video Mode</a></li>
+            <li><a href="#prompt-engineering">Advanced Prompt Engineering</a></li>
+            <li><a href="#history-tab">History Tab</a></li>
+             <li><a href="#history-search">History Search</a></li>
+            <li><a href="#collections-tab">Collections Tab</a></li>
+            <li><a href="#quick-add-button">Quick Add to Collections</a></li>
+            <li><a href="#style-references">Style References Tab</a></li>
+             <li><a href="#weekly-prompts-tab">Weekly Prompts Tab</a></li> 
+           
+            <li><a href="#themes">Themes</a></li>
+            <li><a href="#custom-backgrounds">Custom Backgrounds</a></li>
+           
+           
+            <li><a href="#support">Support</a></li>
+        </ul>
+    </nav>
+
+        <section id="getting-started" class="docs-section">
+            <h2>Getting Started</h2>
+            
+            <div class="demo-box">
+                <h3>Installation and Setup</h3>
+                <ol class="step-list">
+                    <li>Install Prompt Catalyst from the <a href="https://chromewebstore.google.com/detail/prompt-catalyst/hehieakgdbakdajfpekgmfckplcjmgcf" target="_blank" style="color:lime; text-decoration: none;">Chrome Web Store</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/prompt-catalyst/" target="_blank" style="color:lime; text-decoration: none;">Firefox Addons.</a></li>
+                    <li>Pin the extension to your toolbar (optional) and click the extension icon.</li>    
+                    <img src="screenshots/pin.png" alt="interface" width="500" style="margin-top: 20px;">
+                </ol>
+            </div>
+
+            <div class="interface-guide">
+                <h3>Understanding the Interface</h3>
+                <img src="screenshots/Screenshot%202024-12-22%20130024.png" alt="interface" width="500">
+                <h4>Main Components:</h4>
+                <ul>
+                    <li><strong>Header Buttons:</strong>
+            <ul>
+                <li><img src="icons/palette.svg" alt="Theme" style="width: 20px; height: 20px; vertical-align: middle;filter: brightness(0) invert(1);"> <strong>Theme Switch:</strong> Change the visual appearance of the extension by selecting from a variety of themes.</li>
+                <li><img src="icons/video-icon.svg" alt="Video Mode" style="width: 20px; height: 20px; vertical-align: middle;filter: brightness(0) invert(1);"> <strong>Video Mode Toggle:</strong> Switch between standard image prompt generation and video prompt generation mode.</li>
+                <li><img src="icons/docs-icon.svg" alt="Documentation" style="width: 20px; height: 20px; vertical-align: middle;filter: brightness(0) invert(1);"> <strong>Documentation:</strong> Access this help guide for detailed information on using Prompt Catalyst.</li>
+                
+                <li><img src="icons/screen-icon.svg" alt="Web" style="width: 20px; height: 20px; vertical-align: middle;filter: brightness(0) invert(1);"> <strong>Website:</strong> Access to the <a href="https://promptcatalyst.ai/" target="_blank" style="color:lime; text-decoration: none;">full-screen, web version </a> of Prompt Catalyst. Includes the same features as the extension and more!</li>
+                <li><img src="icons/login-icon.svg" alt="Login" style="width: 20px; height: 20px; vertical-align: middle;filter: brightness(0) invert(1);"> <strong>Login/Logout:</strong> Access your Prompt Catalyst account (if you have a premium subscription) to unlock premium features. If you are already logged in, this icon will change to a user icon, allowing you to access your profile, and a logout icon to sign out of your account.</li>
+            </ul>
+        </li>
+                    <li><img src="icons/upload-icon.svg" alt="Upload" style="width: 20px; height: 20px; vertical-align: middle;filter: brightness(0) invert(1);"> <strong>Upload Button:</strong> Click the upload icon to the left of the prompt input field to analyze an image and generate prompts based on it.</li>
+                    
+        <li><strong>Prompt Input Field:</strong> Enter your base description here or use the upload button to analyze an image.</li>
+        
+        <li><strong>Settings Panel:</strong> Customize prompt length, style, and purpose.</li>
+        <li><strong>Advanced Options:</strong> Access model-specific parameters and additional controls.</li>
+        <li><strong>Generation Controls:</strong> Generate and Random buttons.</li>
+    </ul>
+</div>
+         <div class="tip-box">
+        <h4>Best Practices for First-Time Users</h4>
+        <ul>
+            <li>Start with simple, clear descriptions</li>
+            <li>Experiment with different styles before using advanced options</li>
+            <li>Use the "Random" button to explore possibilities</li>
+            <li>Save successful prompts to collections for future reference</li>
+        </ul>
+    </div>
+</section>
+
+        <section id="core-features" class="docs-section">
+            <h2>Core Features Deep Dive</h2>
+
+            <div class="feature-category">
+    <h3>Style System</h3>
+    <img src="screenshots/Styleselection.png" alt="styles" width="500">
+    <div class="system-details">
+        <h4>Artistic Styles:</h4>
+        <ul>
+            <li><strong>Free Styles:</strong> Photorealism, Pixel Art, Impressionism, Pop Art, Vintage, Hand-Drawn, Abstract</li>
+            <li><strong>Premium Styles:</strong> Cyberpunk, Baroque, Steampunk, Neo-noir, Vaporwave, Anime, And more...</li>
+        </ul>
+    </div>
+</div>
+
+<div class="feature-category">
+    <h3>Camera and Lighting Systems</h3>
+    <div class="system-details">
+        <h4>Camera Angles:</h4>
+        <ul>
+            <img src="screenshots/cameras.png" alt="styles" width="500">
+            <li><strong>Basic Angles (Free):</strong> Wide, Close-up, Eye Level, Low, High, etc.</li>
+            <li><strong>Advanced Angles (Premium):</strong> Drone View, Orbital, Dolly Zoom, etc.</li>
+        </ul>
+
+        <h4>Lighting Options:</h4>
+        <ul>
+            <img src="screenshots/lighting.png" alt="styles" width="500">
+            <li><strong>Basic Lighting (Free):</strong> Natural, Studio, Dramatic, Backlight, etc.</li>
+            <li><strong>Advanced Lighting (Premium):</strong> Golden Hour, Volumetric, Bioluminescent, etc.</li>
+        </ul>
+    </div>
+</div>
+        </section>
+        <section id="credit-system" class="docs-section">
+            <h2>Credit System</h2>
+            <div class="feature-explanation">
+                <h3>Fueling Your Creativity</h3>
+                <img src="screenshots/credits.png" alt="styles" width="500">
+                <p>
+                   Prompt Catalyst uses a credit system to manage the usage of its features. Credits are required to generate prompts and previews. This section explains how the credit system works and how you can manage your credits.
+                </p>
+                <h4>Credit Allocation</h4>
+                <ul>
+                    <li><strong>Unauthorized Users:</strong> Users who are not logged in can use Prompt Catalyst for free with a limited number of 3 credits. After reaching this limit, you will need to create an account to continue using the service.</li>
+                    <li><strong>Free Users:</strong> Once registered, free users receive 15 credits daily. These credits refresh every day, allowing you to continue using Prompt Catalyst for free.</li>
+                    <li><strong>Premium Users:</strong> Premium users receive 5000 credits. This provides a significantly larger allowance for generating prompts and using other features. Premium users can also opt to top-up their credits if needed.</li>
+                </ul>
+                <h4>Credit Usage</h4>
+                <p>
+                    Different actions consume different amounts of credits:
+                </p>
+                <ul>
+                    <li><strong>Prompt Generation:</strong> Generating a prompt costs 1 credit.</li>
+                    <li><strong>Preview Generation:</strong> Generating a preview costs 2 credits.</li>
+                    <li><strong>Flux Dev Generation (Website Only):</strong> Generating a prompt using the Flux Dev model on the website costs 10 credits.</li>
+                    <li><strong>Flux Schnell Generation (Website Only):</strong> Generating a prompt using the Flux Schnell model on the website costs 5 credits.</li>
+                </ul>
+                
+            </div>
+        </section>
+<section id="purposes" class="docs-section">
+    <h2>Purposes</h2>
+    <div class="feature-explanation">
+        <h3>Optimizing Prompts for Specific Use Cases</h3>
+        <p>
+            The "Purpose" setting in Prompt Catalyst allows you to tailor your prompts to specific applications. By selecting a purpose, you guide the AI to generate prompts that are better suited for that particular use case.
+        </p>
+                        <img src="screenshots/previews.png" alt="interface" width="500">
+        <h4>Available Purposes</h4>
+        <p>
+            Prompt Catalyst offers a wide range of purposes, including:
+        </p>
+        <ul>
+            <li><strong>Stock Photo:</strong> Generate prompts for generic, commercially viable images.</li>
+            <li><strong>Product Photo:</strong> Create prompts focused on showcasing products.</li>
+            <li><strong>Portrait:</strong> Optimize prompts for creating portraits of people.</li>
+            <li><strong>Concept Art:</strong> Generate prompts for pre-production visual development.</li>
+            <li><strong>Illustration:</strong> Create prompts for artistic illustrations.</li>
+            <li><strong>Poster:</strong> Generate prompts for eye-catching poster designs.</li>
+            <li><strong>Book Cover:</strong> Optimize prompts for creating book cover art.</li>
+            <li><strong>Wallpaper:</strong> Generate prompts for visually appealing desktop or mobile wallpapers.</li>
+            <li><strong>Logo:</strong> Create prompts for simple, memorable brand symbols.</li>
+            <li><strong>3D Render (Premium):</strong> Generate prompts for photorealistic 3D visualizations.</li>
+            <li><strong>Character Sheet (Premium):</strong> Create prompts for character reference sheets.</li>
+            <li><strong>Architectural Visualization (Premium):</strong> Create prompts for architectural designs.</li>
+            <li><strong>And many more!</strong></li>
+        </ul>
+        <h4>How to Use Purposes</h4>
+        <ol>
+            <li>Select the desired purpose from the "Purpose" dropdown menu in the main settings panel.</li>
+            <li>The AI will use this information to fine-tune the generated prompts.</li>
+        </ol>
+       <h4>Examples</h4>
+        <p>Here are some examples demonstrating how different settings, especially "Purpose," influence the generated prompts and resulting images:</p>
+     <table class="examples-table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Purpose</th>
+            <th>Style</th>
+            <th>Other Settings</th>
+            <th>Generated Prompt</th>
+            <th>Resulting Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Headphones</b></td>
+            <td><b>Product Photo</b></td>
+            <td><b>Photorealism</b></td>
+            <td><b>Lighting:</b> Studio</td>
+            <td>A pair of high-fidelity headphones hanging from a minimalistic stand against a soft white background. The headphones are showcased from a three-quarter angle, highlighting the logo and earcup design. Controlled studio lighting brings out the texture of the ear pads and metallic accents, while a slight reflection on the surface beneath the stand provides context for the product's scale.</td>
+            <td><img src="screenshots/example-product-photo.webp" alt="Product Photo Example" width="1900"></td>
+        </tr>
+        <tr>
+            <td><b>A woman smiling</b></td>
+            <td><b>Portrait</b></td>
+            <td><b>Impressionism</b></td>
+            <td><b>Lighting:</b> Golden Hour</td>
+            <td>Set against a backdrop of deep emerald hills, a woman radiates joy as she smiles brightly. The golden hour’s warm glow highlights the contours of her face, creating a flattering depth of field that gently blurs the distant landscape. Her vibrant green outfit mirrors the scenery, while impressionistic brushwork captures the essence of her lively expression and the serene ambiance of the natural setting.</td>
+            <td><img src="screenshots/example-portrait.png" alt="Portrait Example" width="1500"></td>
+        </tr>
+        <tr>
+            <td><b>Mage</b></td>
+            <td><b>Character Sheet</b></td>
+            <td><b>Fantasy</b></td>
+            <td><b>Creativity:</b> 10</td>
+            <td>A female mage character sheet featuring two clear views: front and back. The front view displays her in a flowing robe adorned with intricate runes, with her long hair cascading down her shoulders. The back view shows the robe's elaborate embroidery and a hood. Bright, even lighting illuminates all views, emphasizing her facial features and magical aura, with consistent proportions and a neat layout for easy reproduction.</td>
+            <td><img src="screenshots/example-character-sheet.png" alt="Character Sheet Example" width="1500"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><b>Figurine Design</b></td>
+            <td><b>Cyberpunk</b></td>
+            <td><b>Lighting:</b> Neon Lighting</td>
+            <td>A cyberpunk warrior figurine stands boldly on a hexagonal base. The pose is mid-action, with one arm extended forward and the other drawn back, showcasing intricate armor with a holographic texture. The figurine measures 8 inches tall, with proportions that emphasize a streamlined silhouette. The materials include a combination of polished resin for the body and matte black for the base, allowing for a striking contrast. Displayed at a 45-degree angle under vibrant blue and pink neon lights, the figure comes apart at the shoulders and waist for easy assembly.</td>
+            <td><img src="screenshots/example-figurine.png" alt="Figurine Example" width="1500"></td>
+           
+        </tr>
+       <tr>
+            <td><b>Bakery "Crumb & Co."</b></td>
+            <td><b>Logo</b></td>
+            <td><b>Minimalism</b></td>
+            <td><b>Creativity:</b> 7</td>
+            <td>A minimalist logo design featuring a stylized loaf of bread with a bite taken out, incorporating the text "Crumb & Co." in a modern, sans-serif font underneath. The color palette is warm, with earthy browns and soft cream tones, ensuring clarity in both color and monochrome versions. The silhouette of the bread is sharp and simple, making it easily recognizable at any size.</td>
+            <td><img src="screenshots/example-logo.png" alt="Logo Example" width="1500"></td>
+           
+        </tr>
+         <tr>
+            <td><b>Village</b></td>
+            <td><b>Isometric Map</b></td>
+            <td><b>Fantasy</b></td>
+            <td></td>
+            <td>A sprawling fantasy village, viewed from a precise 30-degree isometric angle, featuring cobblestone streets organized in a clear grid pattern. Layered elevations include a small hill with a winding path leading to a castle at a height of 5 tiles. Low-key lighting casts deep shadows, creating a mysterious atmosphere. Connection points between tiles include wooden bridges over streams, and the buildings have colorful roofs and intricate designs.</td>
+            <td><img src="screenshots/example-isometric.png" alt="Isometric Example" width="1500"></td>
+           
+        </tr>
+         
+    </tbody>
+</table>
+        <div class="tip-box">
+            <h4>Tips for Using Purposes</h4>
+            <ul>
+                <li>Choose the purpose that best matches your intended use of the generated image.</li>
+                <li>Experiment with different purposes to see how they affect the generated prompts.</li>
+                <li>Premium users have access to a wider range of specialized purposes.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+        <section id="image-to-prompt" class="docs-section">
+            <h2><img src="icons/upload-icon.svg" alt="Theme" style="width: 20px; height: 20px; margin-right: 10px;margin-bottom: 5px;vertical-align: middle;filter: brightness(0) invert(1);">Image to Prompt</h2>
+            <div class="feature-explanation">
+                <h3>Turn Images into Text Prompts</h3>
+                                <img src="screenshots/imageupload.png" alt="interface" width="500">
+                <p>
+                    Prompt Catalyst's Image to Prompt feature allows you to upload an image and have our AI analyze it to generate descriptive text prompts. This is particularly useful when you have a visual concept in mind but are struggling to articulate it in words.
+                </p>
+                <h4>How It Works</h4>
+                <ol>
+                    <li>Click the "Upload" button in the main input area.</li>
+                    <li>Select an image file (JPEG, PNG, or WebP) from your computer.</li>
+                    <li>The AI will analyze the image and generate several text prompts that capture its visual elements and style.</li>
+                    <li>The generated prompts will appear in the "Generated Prompts" tab, ready to be copied, edited, or used as a starting point for further refinement.</li>
+                </ol>
+                 <img src="screenshots/anlz.png" alt="interface" width="500">
+                <h4>Benefits</h4>
+                <ul>
+                    <li><strong>Bridge the Gap:</strong> Translate visual ideas into text prompts effortlessly.</li>
+                    <li><strong>Style Inspiration:</strong> Discover new artistic styles and prompt ideas based on existing images.</li>
+                    
+                </ul>
+                <div class="tip-box">
+                    <h4>Tips for Best Results</h4>
+                    <ul>
+                        <li>Use clear, high-quality images.</li>
+                        <li>Images with a distinct style or subject work best.</li>
+                        <li>Experiment with different image types to explore various prompt variations.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+<section id="creativity-value" class="docs-section">
+    <h2>Creativity Value</h2>
+    <div class="feature-explanation">
+        <h3>Fine-Tune the AI's Imagination</h3>
+        <img src="screenshots/creativity.png" alt="interface" width="500">
+        <p>
+            The "Creativity" value slider lets you control how much artistic freedom the AI has when generating prompts. It's a scale from 0 to 10, where:
+        </p>
+        <ul>
+            <li><strong>0</strong> represents the least creative output, with the AI sticking very closely to your input description.</li>
+            <li><strong>10</strong> represents the most creative output, where the AI takes more liberties and introduces more imaginative or unexpected elements.</li>
+        </ul>
+        <h4>How to Use the Creativity Value</h4>
+        <ol>
+            <li>Locate the "Creativity" slider in the "Advanced Options" section.</li>
+            <li>Drag the slider to your desired level of creativity. The current value is displayed next to the slider.</li>
+        </ol>
+        <h4>When to Adjust Creativity</h4>
+        <ul>
+            <li><strong>Lower Values (0-3):</strong> Use when you want the AI to closely follow your input, with minimal deviation. This is useful for generating prompts that are very specific or when you have a precise vision in mind.</li>
+            <li><strong>Mid-Range Values (4-7):</strong> This is a good starting point for most prompts. The AI will balance adhering to your input with introducing some creative variations.</li>
+            <li><strong>Higher Values (8-10):</strong> Use when you want the AI to be more experimental and generate more unexpected or imaginative prompts. This can lead to surprising and inspiring results, but may deviate further from your initial input.</li>
+        </ul>
+        <div class="tip-box">
+            <h4>Tips for Using the Creativity Value</h4>
+            <ul>
+                <li>Start with a mid-range value (around 5) and adjust as needed.</li>
+                <li>Experiment with different values to see how they affect the generated prompts.</li>
+                <li>Combine the "Creativity" value with other settings like "Style" and "Purpose" to achieve a wide range of results.</li>
+            </ul>
+        </div>
+    </div>
+    
+        
+</section>
+         <section id="midjourney-parameters" class="docs-section">
+            <h2>Midjourney Parameter Handling</h2>
+            <div class="feature-explanation">
+                <h3>Seamlessly Manage Your Midjourney Settings</h3>
+                 <img src="screenshots/MJparams.png" alt="interface" width="500">
+                <p>
+                    Prompt Catalyst automatically manages and formats Midjourney parameters for you, ensuring compatibility and ease of use when using Midjourney as your selected AI model.
+                </p>
+                <h4>Automatic Parameter Detection and Formatting</h4>
+                <ul>
+                    <li>When you select "Midjourney" as your AI model, Prompt Catalyst will automatically detect and format any Midjourney parameters you add to your prompts.</li>
+                    <li>Parameters are visually separated within the prompt box for clarity.</li>
+                    <li>You can click on individual parameters to remove them from the prompt.</li>
+                </ul>
+                <h4>Manual Parameter Input</h4>
+                <ul>
+                    <li>You can manually add Midjourney parameters using the dedicated input fields in the "Midjourney Parameters" section.</li>
+                    <li>Use the buttons provided to quickly insert common parameters like `--v 6.1`, `--style raw`, or `--chaos`.</li>
+                    <li>You can set custom values for parameters like aspect ratio (`--ar`), stylize (`--s`), seed (`--seed`), and more.</li>
+                </ul>
+                <h4>Parameter Validation</h4>
+                <ul>
+                    
+                    <li>Prompt Catalyst will prevent you from adding duplicate parameters.</li>
+                </ul>
+                <h4>Parameter Preservation</h4>
+                <ul>
+                    <li>When you copy a prompt, the parameters are included in the copied text, ready to be pasted into Midjourney.</li>
+                    <li>When you save a prompt to a collection, the associated parameters are saved along with it.</li>
+                    
+                </ul>
+                 <img src="screenshots/params.png" alt="interface" width="500">
+                <div class="tip-box">
+                    <h4>Tips for Using Midjourney Parameters</h4>
+                    <ul>
+                        <li>Use the "Model Version & Quality" buttons to quickly switch between Midjourney versions and quality settings.</li>
+                        <li>Experiment with different "Style & Aesthetics" parameters to fine-tune the look of your generated images.</li>
+                        <li>Use "Creative Controls" like `--chaos` and `--weird` to add a touch of unpredictability to your results.</li>
+                        <li>The "Aspect Ratio" and "Stylize Value" inputs allow for precise control over these settings.</li>
+                        <li>Use the "Reference Strength" (`--cw`) parameter to control how much your image prompt influences the style reference.</li>
+                        <li>Utilize the "Seed" parameter to reproduce specific generation results.</li>
+                        <li>The "Exclude Elements" (`--no`) parameter lets you specify elements you don't want to see in the generated image.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="variations-button" class="docs-section">
+            <h2><img src="icons/variations-icon.svg" alt="Theme" style="width: 20px; height: 20px; margin-right: 10px;margin-bottom: 5px;vertical-align: middle;filter: brightness(0) invert(1);">Variations Button</h2>
+            <div class="feature-explanation">
+                <h3>Explore Similar Prompts with a Click</h3>
+                <p>
+                    The "Variations" button lets you quickly generate alternative versions of a prompt. These variations maintain the core theme and elements of the original prompt but introduce subtle changes in style, composition, or details.
+                </p>
+                <h4>How to Use</h4>
+                <ol>
+                    <li>Generate or select a prompt you like.</li>
+                    <li>Click the "Variations" button in the prompt box.</li>
+                    <li>The AI will generate new prompts that are thematically related to the original, appearing in the "Generated Prompts" tab.</li>
+                </ol>
+                <h4>Benefits</h4>
+                <ul>
+                    <li><strong>Idea Expansion:</strong> Discover new directions and possibilities based on your initial prompt.</li>
+                    <li><strong>Creative Exploration:</strong> Quickly explore variations in style, lighting, or composition.</li>
+                    <li><strong>Refinement:</strong> Iterate on a prompt to fine-tune the generated image.</li>
+                </ul>
+                <div class="tip-box">
+                    <h4>Tips for Using Variations</h4>
+                    <ul>
+                        <li>Use variations to refine a prompt that's close but not quite perfect.</li>
+                        <li>Combine elements from different variations to create a unique prompt.</li>
+                        <li>If you like a variation, save it to a collection for later use.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="extend-shorten" class="docs-section">
+            <h2><img src="icons/extend-icon.svg" alt="Theme" style="width: 20px; height: 20px; margin-right: 10px;margin-bottom: 5px;vertical-align: middle;filter: brightness(0) invert(1);">Extend and Shorten <img src="icons/shorten-icon.svg" alt="Theme" style="width: 20px; height: 20px; margin-right: 10px;margin-bottom: 3px;vertical-align: middle;filter: brightness(0) invert(1);">Buttons</h2>
+            <div class="feature-explanation">
+                <h3>Fine-Tune Prompt Length</h3>
+                <p>
+                    Prompt Catalyst provides "Extend" and "Shorten" buttons to help you adjust the length and detail level of your prompts.
+                </p>
+                <h4>Extend Button</h4>
+                <p>
+                    The "Extend" button allows you to add more detail and context to your existing prompts.
+                </p>
+                <ul>
+                    <li><strong>How to Use:</strong>
+                        <ol>
+                            <li>Click the "Extend" button in the prompt box.</li>
+                            <li>A popup will appear where you can specify the type of details you want to add (style, lighting, objects, or mood).</li>
+                            <img src="screenshots/extend.png" alt="interface" width="500">
+                            <li>The AI will generate extended versions of your prompt, incorporating the requested details.</li>
+                        </ol>
+                    </li>
+                    <li><strong>Benefits:</strong>
+                        <ul>
+                            <li>Enrich your prompts with more specific visual elements.</li>
+                            <li>Increase the level of detail in generated images.</li>
+                            <li>Add nuance and complexity to your prompts.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>Shorten Button</h4>
+                <p>
+                    The "Shorten" button helps you create more concise versions of your prompts while retaining the core concept.
+                </p>
+                <ul>
+                    <li><strong>How to Use:</strong>
+                        <ol>
+                            <li>Click the "Shorten" button in the prompt box.</li>
+                            <li>The AI will generate shortened versions of your prompt, removing less essential details.</li>
+                        </ol>
+                    </li>
+                    <li><strong>Benefits:</strong>
+                        <ul>
+                            <li>Create more focused and direct prompts.</li>
+                            <li>Reduce prompt complexity for faster generation.</li>
+                            <li>Experiment with different levels of detail.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="tip-box">
+                    <h4>Tips for Extending and Shortening</h4>
+                    <ul>
+                        <li>Use "Extend" when you want to add more richness and complexity to your images.</li>
+                        <li>Use "Shorten" when your prompts are too long or convoluted.</li>
+                        <li>The "Extend" button is disabled for prompts longer than 800 characters.</li>
+                        <li>The "Shorten" button is disabled for prompts shorter than 170 characters.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="preview-button" class="docs-section">
+            <h2><img src="icons/eye-icon.svg" alt="Theme" style="width: 20px; height: 20px; margin-right: 10px;margin-bottom: 5px;vertical-align: middle;filter: brightness(0) invert(1);">Preview Button</h2>
+            <div class="feature-explanation">
+                <h3>Get a Glimpse Before You Generate</h3>
+                <img src="screenshots/preview.png" alt="interface" width="500">
+                <p>
+                    The "Preview" button, represented by an eye icon, allows you to generate a small preview image based on your prompt *before* committing to a full generation. This helps you quickly assess the general direction of your prompt and make adjustments if needed.
+                </p>
+                <h4>How to Use</h4>
+                <ol>
+                    <li>Select a prompt you want to preview.</li>
+                    <li>Click the "Preview" button in the prompt box.</li>
+                    <li>A small preview image will be generated in 2-3 seconds and displayed within the prompt box.</li>
+                </ol>
+                <h4>Benefits</h4>
+                <ul>
+                    <li><strong>Rapid Iteration:</strong> Quickly test and refine prompts before generating full-size images.</li>
+                    <li><strong>Resource-Friendly:</strong> Previews use fewer resources than full generations.</li>
+                    <li><strong>Visual Feedback:</strong> Get a visual sense of your prompt's direction.</li>
+                </ul>
+                <div class="tip-box">
+                    <h4>Tips for Using Previews</h4>
+                    <ul>
+                        <li>Use previews to experiment with different prompt variations.</li>
+                        <li>Note that previews are low-resolution and may not fully represent the final image quality.</li>
+                        <li>Free users have a limited number of previews per day. Premium users have a higher limit.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="video-mode" class="docs-section">
+            <h2>Video Mode Features</h2>
+            
+            <div class="feature-explanation">
+                <h3>Create Dynamic Video Prompts</h3>
+                <img src="screenshots/videomode.png" alt="interface" width="500">
+                <p>
+                   Prompt Catalyst's Video Mode allows you to generate prompts tailored for AI video generation tools. This mode focuses on elements critical to video creation, such as scene descriptions, camera movements, video style, and timing.
+                </p>
+                <h4>Video Prompt Components</h3>
+                <table class="component-table">
+                    <tr>
+                        <th>Component</th>
+                        <th>Description</th>
+                        <th>Examples</th>
+                    </tr>
+                    <tr>
+                        <td>Scene Description</td>
+                        <td>Core narrative and visual elements of the video scene.</td>
+                        <td>"A flower blooming in a garden"</td>
+                    </tr>
+                    <tr>
+                        <td>Camera Movement</td>
+                        <td>Describes how the camera moves or pans through the scene.</td>
+                        <td>Static, Pan, Tracking Shot, Dolly, Crane Shot</td>
+                    </tr>
+                    <tr>
+                        <td>Video Style</td>
+                        <td>Defines the overall aesthetic and style of the video.</td>
+                        <td>Cinematic, Documentary, Music Video, Animation</td>
+                    </tr>
+                    <tr>
+                        <td>Lighting</td>
+                        <td>Specifies the lighting conditions of the video scene.</td>
+                        <td>Natural, Studio, Dramatic, Backlight, Golden Hour (Premium)</td>
+                    </tr>
+                    <tr>
+                        <td>Camera Angle</td>
+                        <td>Indicates the angle or perspective from which the scene is shot.</td>
+                        <td>Wide Angle, Close Up, Eye Level, Low Angle, High Angle</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="best-practices">
+                <h3>Video Prompt Best Practices</h3>
+                <ul>
+                    <li><strong>Scene Flow:</strong> Clearly describe the sequence of actions or events in the scene.</li>
+                    <li><strong>Transitions:</strong> Specify how scenes connect or transition (e.g., cut, fade, dissolve).</li>
+                    <li><strong>Lighting and Mood:</strong> Set the tone with appropriate lighting descriptions.</li>
+                </ul>
+            </div>
+
+            <div class="premium-features">
+                <h3>Premium Video Features</h3>
+                <ul>
+                    <li><strong>Advanced Movements:</strong> Access specialized camera movements like Orbital, Drone Fly, Steadicam, and Vertical.</li>
+                    <li><strong>Special Effects:</strong> Utilize effects like Slow Motion and Time Lapse for creative impact.</li>
+                    <li><strong>Style Variety:</strong> Choose from a wider range of video styles, including Aerial, Experimental, and more.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="prompt-engineering" class="docs-section">
+            <h2>Advanced Prompt Engineering</h2>
+            
+            <div class="engineering-principles">
+                <h3>Key Principles</h3>
+                <ul>
+                    <li><strong>Clarity:</strong> Use precise, unambiguous language</li>
+                    <li><strong>Structure:</strong> Organize elements in priority order</li>
+                    <li><strong>Detail Balance:</strong> Include essential details without overloading</li>
+                    <li><strong>Technical Terms:</strong> Use industry-standard terminology</li>
+                </ul>
+            </div>
+
+            
+        </section>
+<section id="history-tab" class="docs-section">
+    <h2>History Tab</h2>
+    <div class="feature-explanation">
+        <h3>Your Prompting Journey at a Glance</h3>
+        <p>
+            The "History" tab is your personal archive of generated prompts. It automatically saves your prompting activity, allowing you to revisit, reuse, and refine your past creations.
+        </p>
+        <img src="screenshots/History.png" alt="interface" width="500">
+        <h4>What's Saved in History</h4>
+        <p>
+            The History tab stores the following information for each prompt you generate:
+        </p>
+        <ul>
+            <li><strong>Type:</strong> Whether it was a standard prompt, a variation, a video prompt, or an image analysis result.</li>
+            <li><strong>Description:</strong> The base description you entered.</li>
+            <li><strong>Prompt Length:</strong> The selected length (Short, Medium, Long, or Random).</li>
+            <li><strong>Style:</strong> The selected style.</li>
+            <li><strong>Purpose:</strong> The selected purpose.</li>
+            <li><strong>Creativity:</strong> The chosen creativity value.</li>
+            <li><strong>Lighting:</strong> The selected lighting.</li>
+            <li><strong>Camera Angle:</strong> The selected camera angle.</li>
+            <li><strong>AI Model:</strong> The selected AI model.</li>
+            <li><strong>Prompts:</strong> The generated prompt(s).</li>
+        </ul>
+
+        <h4>Key Features</h4>
+        <ul>
+            <li><strong>Automatic Saving:</strong> Your prompts are automatically saved to the history - no manual action required.</li>
+            <li><strong>Searchable:</strong> Use the search bar to quickly find specific prompts based on keywords, descriptions, or settings. (See the <a href="#history-search" style="color:lime;">History Search</a> section for more details).</li>
+            <li><strong>Organized View:</strong> Prompts are displayed in a clear, chronological list with all relevant details.</li>
+            <li><strong>Actions:</strong> You can copy, generate variations, extend, shorten, or add prompts from your history to collections using the buttons in each prompt box.</li>
+            <li><strong>Premium History Limit:</strong>
+                <ul>
+                   <li><strong>Free Users:</strong> The history tab stores the last 5 generated prompts.</li>
+                   <li><strong>Premium Users:</strong> The history tab stores all generated prompts.</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="tip-box">
+            <h4>Tips for Using the History Tab</h4>
+            <ul>
+                <li>Use the search bar to quickly find prompts based on keywords or settings.</li>
+                <li>Revisit your history to get inspiration or to refine previous ideas.</li>
+                <li>Copy prompts from your history to use them again or as a starting point for new variations.</li>
+                <li>Add prompts from your history to collections to keep them organized for the long term.</li>
+                <li>If you frequently generate a large number of prompts, consider upgrading to Premium for a larger history capacity.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+         <section id="history-search" class="docs-section">
+            <h2><img src="icons/search-icon.svg" alt="Theme" style="width: 20px; height: 20px; margin-right: 10px;margin-bottom: 5px;vertical-align: middle;filter: brightness(0) invert(1);">History Search</h2>
+            <div class="feature-explanation">
+                <h3>Find Your Past Prompts</h3>
+                <p>
+                    The History tab includes a search bar that allows you to quickly find prompts you've generated in the past. You can search by keywords, descriptions, model, style, or any other detail you remember from your previous prompts.
+                </p>
+                <h4>How to Use</h4>
+                <ol>
+                    <li>Go to the "History" tab.</li>
+                    <li>Enter your search term in the search bar.</li>
+                    <li>The history list will update in real-time to display matching prompts.</li>
+                </ol>
+                
+                <div class="tip-box">
+                    <h4>Tips for Searching</h4>
+                    <ul>
+                        <li>Use specific keywords related to the prompt's content or style.</li>
+                        <li>Combine multiple keywords to narrow down your search.</li>
+                        <li>Clear the search bar to view the full history again.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+       <section id="collections-tab" class="docs-section">
+            <h2>Collections Tab</h2>
+            <div class="feature-explanation">
+                <h3>Organize and Manage Your Prompts</h3>
+                  <img src="screenshots/Collections.png" alt="interface" width="500">
+                <p>
+                    The "Collections" tab allows you to create, organize, and manage collections of your prompts. This is a powerful tool for keeping your prompts organized by project, theme, style, or any other criteria you choose.
+                </p>
+                <h4>Key Features</h4>
+                <ul>
+                    <li><strong>Create Collections:</strong> Easily create new collections with custom names.</li>
+                    <li><strong>Add Prompts:</strong> Add prompts to collections using the "Quick Add" button or from within the Collections tab.</li>
+                    <li><strong>Manage Collections:</strong> Rename, delete, and reorder collections as needed.</li>
+                    <li><strong>Move Prompts:</strong> Move prompts between collections using a simple interface.</li>
+                    <li><strong>Color Coding</strong> Assign colors to your collections for visual organization.</li>
+                    <li><strong>Export Collections</strong> Export your collections as text files for backup or sharing.</li>
+                </ul>
+                <h4>How to Use Collections</h4>
+                <ol>
+                    <li>Go to the "Collections" tab.</li>
+                    <li>Click the "New Collection" button to create a new collection.</li>
+                    <li>Give your collection a name and click "Create".</li>
+                    <li>To add prompts to a collection, use the "Quick Add" button on any prompt or drag and drop prompts from the "Generated Prompts" or "History" tabs into the collection.</li>
+                    <li>To manage your collections, use the icons next to each collection's name in the Collections tab.</li>
+                </ol>
+                <div class="tip-box">
+                    <h4>Tips for Using Collections</h4>
+                    <ul>
+                        <li>Create collections for different projects, themes, or styles.</li>
+                        <li>Use descriptive collection names to easily identify their contents.</li>
+                        <li>Regularly review and clean up your collections to keep them organized.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+       <section id="quick-add-button" class="docs-section">
+            <h2><img src="icons/star-empty.svg" alt="Theme" style="width: 20px; height: 20px; margin-right: 10px;margin-bottom: 5px;vertical-align: middle;filter: brightness(0) invert(1);">Quick Add to Collections</h2>
+            <div class="feature-explanation">
+                <h3>Save Prompts with a Single Click</h3>
+                  <img src="screenshots/quickadd.png" alt="interface" width="500">
+                <p>
+                    The "Quick Add" button, represented by a star icon, provides a fast and convenient way to save prompts to your collections.
+                </p>
+                <h4>How to Use</h4>
+                <ol>
+                    <li>Generate or select a prompt you want to save.</li>
+                    <li>Click the "Quick Add" button in the prompt box.</li>
+                    <li>A dropdown menu will appear, allowing you to select an existing collection or create a new one.</li>
+                    <li>The prompt will be added to the chosen collection.</li>
+                </ol>
+                <h4>Benefits</h4>
+                <ul>
+                    <li><strong>Streamlined Organization:</strong> Quickly save prompts to relevant collections without interrupting your workflow.</li>
+                    <li><strong>One-Click Saving:</strong> Add prompts to collections with a single click.</li>
+                    <li><strong>Easy Collection Management:</strong> Create new collections on the fly while saving prompts.</li>
+                </ul>
+                <div class="tip-box">
+                    <h4>Tips for Using Quick Add</h4>
+                    <ul>
+                        <li>Use the star icon color to quickly identify if a prompt is already in a collection (filled star) or not (empty star).</li>
+                        <li>Create new collections directly from the Quick Add menu to stay organized.</li>
+                        <li>If you accidentally add a prompt to the wrong collection, you can move it using the "Move" button in the Collections tab.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+ <section id="style-references" class="docs-section">
+            <h2>Style References Tab</h2>
+            <div class="feature-explanation">
+                <h3>Explore and Utilize Midjourney Style Codes</h3>
+                  <img src="screenshots/srefs.png" alt="interface" width="500">
+                <p>
+                    The "Style Codes" tab provides a comprehensive library of style reference codes specifically for use with Midjourney. These codes allow you to quickly apply a wide range of artistic styles to your generated images.
+                </p>
+                <h4>Features</h4>
+                <ul>
+                    <li><strong>Visual Style Gallery:</strong> Browse through a curated collection of visual styles, each represented by a sample image and its corresponding Midjourney style code.</li>
+                    <li><strong>Copy Code:</strong> Easily copy the style code to your clipboard with a single click.</li>
+                    <li><strong>Fullscreen View:</strong> Expand the style reference library to a full-screen view for better browsing and selection.</li>
+                    <li><strong>Premium Styles:</strong> Premium users get access to an expanded library of over 100 exclusive style codes.</li>
+                </ul>
+                <h4>How to Use Style Codes</h4>
+                <ol>
+                    <li>Go to the "Style Codes" tab.</li>
+                    <li>Browse the available styles and find one you like.</li>
+                    <li>Click the "Copy" button next to the style code.</li>
+                    <li>Paste the copied code into your prompt in Midjourney, usually at the end of the prompt, to apply the style to your generated image.</li>
+                </ol>
+                <div class="tip-box">
+                    <h4>Tips for Using Style Codes</h4>
+                    <ul>
+                        <li>Experiment with combining multiple style codes to create unique effects.</li>
+                        
+                        <li>Refer to the Midjourney documentation for more advanced usage of style references.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+         <section id="weekly-prompts-tab" class="docs-section">
+    <h2>Weekly Prompts Tab</h2>
+    <div class="feature-explanation">
+        <h3>Get Inspired with Fresh Prompts Every Week</h3>
+         <img src="screenshots/weekly.png" alt="interface" width="500">
+        <p>
+            The "Prompts of the Week" tab provides a curated selection of unique and inspiring prompts. These prompts are hand-picked by our team and updated weekly, ensuring a constant flow of fresh ideas.
+        </p>
+        <h4>Features</h4>
+        <ul>
+            <li><strong>Curated Selection:</strong> Discover high-quality prompts chosen for their creative potential.</li>
+            <li><strong>Weekly Updates:</strong> New prompts are added every week to keep things fresh.</li>
+            <li><strong>Image Previews:</strong> Each prompt is accompanied by a sample image to illustrate the concept.</li>
+            <li><strong>Copy & Use:</strong> Easily copy the prompts and use them in your favorite AI image generator.</li>
+            <li><strong>Variations & Customization:</strong> Generate variations, extend, or shorten the weekly prompts to make them your own.</li>
+        </ul>
+        <h4>How to Use the Weekly Prompts Tab</h4>
+        <ol>
+            <li>Click on the "Prompts of the Week" tab (calendar icon).</li>
+            <li>Browse through the available prompts.</li>
+            <li>Click the "Copy" button to copy a prompt to your clipboard.</li>
+            <li>Use the "Variations," "Extend," and "Shorten" buttons to modify the prompts.</li>
+            <li>Click the "Add to Collection" button to save a prompt to one of your collections.</li>
+        </ol>
+        <div class="tip-box">
+            <h4>Tips for Using Weekly Prompts</h4>
+            <ul>
+                <li>Check the tab regularly for new inspiration.</li>
+                <li>Use the weekly prompts as a starting point and customize them to fit your specific needs.</li>
+                <li>Combine elements from different weekly prompts to create unique combinations.</li>
+                
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+        <section id="themes" class="docs-section">
+            <h2>Theme Customization</h2>
+            
+            <div class="theme-options">
+                 <img src="screenshots/themes.png" alt="interface" width="500">
+                <h3>Some Available Themes</h3>
+                <table class="theme-table">
+                    <tr>
+                        <th>Theme</th>
+                        <th>Description</th>
+                        <th>Special Features</th>
+                    </tr>
+                    <tr>
+                        <td>Default</td>
+                        <td>Professional dark interface</td>
+                        <td>High contrast, eye-friendly</td>
+                    </tr>
+                    <tr>
+                        <td>Christmas Joy</td>
+                        <td>Festive theme with animations</td>
+                        <td>Snowfall effect, holiday colors</td>
+                    </tr>
+                    <tr>
+                        <td>Neon Synth</td>
+                        <td>Cyberpunk-inspired design</td>
+                        <td>Neon accents, grid patterns</td>
+                    </tr>
+                    <tr>
+                        <td>Custom Background</td>
+                        <td>Personalized theme</td>
+                        <td>Upload custom images</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <section id="custom-backgrounds" class="docs-section">
+            <h2>Custom backgrounds (currently not working in Firefox)</h2>
+            <div class="feature-explanation">
+                <h3>Personalize Your Workspace</h3>
+                 <img src="screenshots/bg.png" alt="interface" width="500">
+                <p>
+                    Prompt Catalyst allows you to set a custom background image for the extension, giving you a more personalized and visually appealing workspace.
+                </p>
+                <h4>How to Set a Custom Background</h4>
+                <ol>
+                    <li>Click the "Theme" button in the extension's header.</li>
+                    <li>In the theme panel, click the "Custom Background" button.</li>
+                    <li>You will be redirected to a page where you can upload an image from your computer.</li>
+                    <li>Select the image you want to use as your background.</li>
+                    <li>The custom background will be applied automatically and saved for future sessions.</li>
+                </ol>
+                <h4>Tips for Choosing a Background Image</h4>
+                <ul>
+                    <li>Use high-resolution images for the best visual quality.</li>
+                    <li>Choose images that are not too distracting or busy.</li>
+                    <li>Consider images with darker colors or gradients for better contrast with the extension's interface.</li>
+                    <li>You can change your custom background at any time.</li>
+                </ul>
+            </div>
+        </section>
+        
+        
+       
+          
+
+        <section id="support" class="docs-section">
+            <h2>Support Resources</h2>
+            
+            <div class="support-options">
+                <h3>Getting Help</h3>
+                <ul>
+                    <li><strong>Email Support:</strong> <a href="mailto:support@catalystmedia.ai"style="color:lime;">support@catalystmedia.ai</a></li>
+            
+                </ul>
+            </div>
+
+           
+
+
+            <div class="feedback">
+                <h3>Providing Feedback</h3>
+                <ul>
+                    <li><strong>Feature Requests:</strong> Submit ideas for new features</li>
+                    <li><strong>Bug Reports:</strong> Help us improve by reporting issues</li>
+                    <li><strong>User Experience:</strong> Share your workflow suggestions</li>
+                    <li><strong>Style Suggestions:</strong> Recommend new style presets</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="docs-footer">
+            <div class="footer-content">
+                <p>Last Updated: January 16, 2025</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://promptcatalyst.ai/premium" target="_blank">Get Premium</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="scripts/docs.js"></script>
+</body>
+</html>

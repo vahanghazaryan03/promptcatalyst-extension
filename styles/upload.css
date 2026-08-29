@@ -1,0 +1,206 @@
+/* upload.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #101010;
+    color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    text-align: center;
+}
+.limit-reached-prompt {
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+    text-align: center;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.limit-reached-prompt h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.limit-reached-prompt .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f5f5f5;
+    font-size: 13px;
+}
+
+.upgrade-btn {
+    background: linear-gradient(to right, #a64fe2, #e54fe2, #08a8ff);
+    background-size: 200% 200%;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 12px 24px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    animation: subtleShift 5s ease infinite;
+    margin-top: 20px;
+}
+
+@keyframes subtleShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.upgrade-btn:hover {
+    transform: translateY(-2px);
+}
+.upload-area {
+    background-color: #1e1e1e;
+    border: 2px dashed #42f56f;
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-area:hover {
+    border-color: #31db8a;
+    background-color: #252525;
+}
+
+.upload-area.dragging {
+    background-color: #252525;
+    border-color: #31db8a;
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    filter: brightness(0) saturate(100%) invert(80%) sepia(39%) saturate(1109%) hue-rotate(86deg) brightness(92%) contrast(98%);
+}
+
+.upload-text {
+    font-size: 1.1rem;
+    color: #f5f5f5;
+    margin-bottom: 0.5rem;
+}
+
+.upload-subtext {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.button {
+    background-color: #42f56f;
+    color: #101010;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.button:hover {
+    background-color: #31db8a;
+    transform: translateY(-2px);
+}
+
+#status {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#status.active {
+    opacity: 1;
+}
+
+#status.error {
+    background-color: rgba(255, 69, 58, 0.1);
+    color: #ff453a;
+}
+
+#status.success {
+    background-color: rgba(66, 245, 111, 0.1);
+    color: #42f56f;
+}
+
+#status.loading {
+    background-color: rgba(255, 165, 0, 0.1);
+    color: #ffa500;
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #42f56f;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.instructions {
+    background-color: rgba(66, 245, 111, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    display: none;
+}
+
+.instructions.show {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

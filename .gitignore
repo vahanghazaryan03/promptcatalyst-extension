@@ -1,0 +1,14 @@
+# Build output. `node tools/build.js` writes the store-ready packages here.
+dist/
+
+# Local agent state.
+.claude/
+
+# Signing keys, should one ever be generated locally. The published extension is
+# signed by the stores; nothing here needs a private key.
+*.pem
+
+# OS noise.
+Thumbs.db
+desktop.ini
+.DS_Store

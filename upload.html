@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image - Prompt Catalyst</title>
+    <link rel="stylesheet" href="styles/upload.css">
+</head>
+<body>
+    <div class="container">
+        <div class="upload-area" id="upload-area">
+            <img src="icons/upload-icon.svg" alt="Upload" class="upload-icon">
+            <div class="upload-text">Drop your image here or click to browse</div>
+            <div class="upload-subtext">Supports JPG, PNG and WebP up to 5MB</div>
+            <input type="file" id="file-input" style="display: none" accept="image/jpeg,image/png,image/webp">
+            <button class="button" id="select-file-button">Select Image</button>
+        </div>
+        <div id="status"></div>
+        <div class="instructions" id="instructions">
+            
+        </div>
+    </div>
+    <script src="scripts/upload.js"></script>
+</body>
+</html>

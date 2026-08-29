@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Catalyst</title>
+    <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Initial Loading animation section -->
+<div id="initialLoading" style="display: none;">
+    <div class="spinner"></div>
+    <p>Loading, please wait...</p>
+</div>
+
+
+        <!-- Header Section -->
+ <div class="header">
+            <div class="title-container">
+                
+                <img src="icons/logo.png" alt="Logo" class="logo">
+                <h1 id="freeTitle">Prompt Catalyst</h1>
+                <h1 class="premium-title"  id="premiumTitle"  style="display: none;" >Prompt Catalyst</h1>
+                <span class="user-status" id="userStatus"></span> <!-- Single span for user status -->
+                
+                <img src="icons/screen-icon.svg" alt="Web App" id="webAppIcon" class="web-app-icon" title="Open Web App">
+<img src="icons/login-icon.svg" alt="Login" id="loginIcon" class="login-icon">
+                 <img src="icons/user-icon.svg" alt="User" id="userIcon" class="user-icon" style="display: none;">
+    
+                <img src="icons/logout-icon.svg" alt="Logout" id="logoutIcon" class="logout-icon" style="display: none;">
+               
+    <!-- Greeting -->
+    
+            </div>
+
+        </div>
+             <p id="userGreeting" class="user-greeting" style="display: none;"></p>
+
+
+
+
+        
+<div id="loginForm" class="login-popup">
+    <div class="login-popup-content">
+        <div class="login-popup-header">
+            <h3>Login</h3>
+            <span class="login-close">&times;</span>
+        </div>
+        
+        <div class="login-popup-body">
+            <div class="login-input-group">
+                <label for="emailInput">Email</label>
+                <input type="email" id="emailInput" placeholder="Enter your email">
+            </div>
+            
+            <div class="login-input-group">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" placeholder="Enter your password">
+            </div>
+            
+            <a href="https://promptcatalyst.ai/password-reset" class="forgot-password-link" target="_blank">
+                Forgot Password?
+            </a>
+
+            <div class="login-divider"><span>or</span></div>
+
+            <button type="button" class="google-signin-btn" id="googleSignIn">
+                <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
+                    <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/>
+                    <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/>
+                    <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/>
+                    <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/>
+                </svg>
+                <span>Continue with Google</span>
+            </button>
+
+            <div id="loginMessage" class="login-message"></div>
+        </div>
+        
+        <div class="login-popup-footer">
+            <button class="login-cancel-btn" id="cancelLogin">Cancel</button>
+            <button class="login-confirm-btn" id="submitLogin">Sign In</button>
+        </div>
+        
+        <div class="premium-note">
+            
+           <a href="https://promptcatalyst.ai/sign-up" class="premium-link" target="_blank">Sign Up</a>.
+        </div>
+    </div>
+</div>
+        <!-- Main Content Section -->
+        <div id="mainContent">
+            <div class="input-section">
+    <label for="promptInput">Describe your prompt:</label>
+   
+    <div class="input-wrapper">
+        <input type="text" id="promptInput" placeholder="Short description of your prompt here...">
+        <span class="upload-button" title="Image to Prompt">
+            <img src="icons/upload-icon.svg" alt="Upload">
+        </span>
+        <span id="clearButton" class="clear-button">×</span>
+    </div>
+</div>
+            
+            <!-- New Prompt Length Slider -->
+<!-- Prompt Length Slider -->
+<div class="input-section">
+    <label for="promptLength">Prompt Length:</label>
+    <div class="slider-container">
+        <input type="range" id="promptLength" min="1" max="3" value="2" step="1">
+        <div class="slider-labels">
+            <span>Short</span>
+            <span>Medium</span>
+            <span>Long</span>
+        </div>
+    </div>
+</div>
+
+<!-- Creativity Value Slider -->
+
+            <div class="input-section">
+    <div class="label-with-info" id="StyleSelect">
+        Style:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="style">
+            <span class="tooltip-text">Choose an artistic style to influence the visual appearance of your image. Each style will give your image a distinct look and feel.</span>
+        </div>
+    </div>
+    <select id="styleSelect" class="style-select">
+        <!-- Free Styles -->
+        <option value="not_specified" data-preview="">Not Specified</option>
+        <option value="realism">Photorealism</option>
+        <option value="pixel_art">Pixel Art</option>
+        <option value="impressionism">Impressionism</option>
+        <option value="pop_art">Pop Art</option>
+        <option value="vintage">Vintage</option>
+        <option value="hand_drawn">Hand-Drawn</option>
+        <option value="abstract">Abstract</option>
+        <option value="minimalism">Minimalism</option>
+        <option value="cartoon">Cartoon</option>
+        <option value="surrealism">Surrealism</option>
+
+        <!-- Premium Styles -->
+        <option value="cyberpunk">Cyberpunk (Premium)</option>
+        <option value="baroque">Baroque (Premium)</option>
+        <option value="steampunk">Steampunk (Premium)</option>
+        <option value="futurism">Futurism (Premium)</option>
+        <option value="neo_noir">Neo-noir (Premium)</option>
+        <option value="vaporwave">Vaporwave (Premium)</option>
+        <option value="anime">Anime (Premium)</option>
+        <option value="gothic">Gothic (Premium)</option>
+        <option value="fantasy">Fantasy (Premium)</option>
+        <option value="art_nouveau">Art Nouveau (Premium)</option>
+        <option value="synthwave">Synthwave (Premium)</option>
+        <option value="renaissance">Renaissance (Premium)</option>
+        <option value="ukiyo_e">Ukiyo-e (Premium)</option>
+        <option value="bauhaus">Bauhaus (Premium)</option>
+        <option value="art_deco">Art Deco (Premium)</option>
+        <option value="hyperrealism">Hyperrealism (Premium)</option>
+        <option value="dieselpunk">Dieselpunk (Premium)</option>
+        <option value="dark_fantasy">Dark Fantasy (Premium)</option>
+        <option value="retro_futurism">Retro-Futurism (Premium)</option>
+    </select>
+</div>
+<div class="input-section">
+    <div class="label-with-info">
+        Purpose:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="purpose">
+            <span class="tooltip-text">Select the intended use of your image. This will optimize the prompt for specific formats and requirements.</span>
+        </div>
+    </div>
+    <select id="purposeSelect" name="purpose">
+        <!-- Free Options -->
+        <option value="not_specified" data-preview="">Not Specified</option>
+        <option value="stock_photo" data-preview="stock-photo-preview.png">Stock Photo</option>
+        <option value="product_photo" data-preview="product-photo-preview.png">Product Photo</option>
+        <option value="portrait" data-preview="portrait-preview.png">Portrait</option>
+        <option value="concept_art" data-preview="concept-art-preview.png">Concept Art</option>
+        <option value="illustration" data-preview="illustration-preview.png">Illustration</option>
+        <option value="poster" data-preview="poster-preview.png">Poster</option>
+        <option value="book_cover" data-preview="book-cover-preview.png">Book Cover</option>
+        <option value="wallpaper" data-preview="wallpaper-preview.png">Wallpaper</option>
+        <option value="logo" data-preview="logo-preview.png">Logo</option>
+
+        <!-- Premium Options -->
+        <option value="3d_render" data-preview="3d-render-preview.png" class="premium-option">3D Render (Premium)</option>
+        <option value="character_sheet" data-preview="character-sheet-preview.png" class="premium-option">Character Sheet (Premium)</option>
+        <option value="storyboard" data-preview="storyboard-preview.png" class="premium-option">Storyboard (Premium)</option>
+        <option value="architectural" data-preview="architectural-preview.png" class="premium-option">Architectural Visualization (Premium)</option>
+        <option value="album_cover" data-preview="album-cover-preview.png" class="premium-option">Album Cover (Premium)</option>
+        <option value="game_asset" data-preview="game-asset-preview.png" class="premium-option">Game Asset (Premium)</option>
+        <option value="social_media" data-preview="social-media-preview.png" class="premium-option">Social Media (Premium)</option>
+        <option value="packaging" data-preview="packaging-preview.png" class="premium-option">Packaging Design (Premium)</option>
+        <option value="infographic" data-preview="infographic-preview.png" class="premium-option">Infographic (Premium)</option>
+        <option value="icon_set" data-preview="icon-set-preview.png" class="premium-option">Icon Set (Premium)</option>
+        <option value="textile" data-preview="textile-preview.png" class="premium-option">Textile Pattern (Premium)</option>
+        <option value="matte_painting" data-preview="matte-painting-preview.png" class="premium-option">Matte Painting (Premium)</option>
+        <option value="card_art" data-preview="card-art-preview.png" class="premium-option">Trading Card Art (Premium)</option>
+        <option value="emote" data-preview="emote-preview.png" class="premium-option">Emote/Emoji (Premium)</option>
+        <option value="ui_element" data-preview="ui-element-preview.png" class="premium-option">UI Element (Premium)</option>
+    </select>
+</div>
+                       <!-- Style Selection -->
+<div class="advanced-options-toggle">
+    <button id="advancedOptionsBtn" class="advanced-options-btn">
+        <span>More Settings</span>
+        <img src="icons/chevron-down.svg" alt="Toggle" class="chevron-icon">
+    </button>
+</div>
+
+          <div id="advancedOptions" class="advanced-options" style="display: none;">
+             <div class="input-section">
+    <div class="label-with-info">
+        Creativity:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" alt="Info" class="info-icon">
+            <span class="tooltip-text">Adjust how creative the AI should be with your prompt. Lower values stay closer to your description, while higher values allow more artistic freedom.</span>
+        </div>
+    </div>
+    <div class="slider-container">
+        <input type="range" id="creativityValue" min="0" max="10" value="5" step="1">
+        <div class="slider-value">5</div>
+    </div>
+</div>
+   
+
+
+
+<!-- Lighting Selection -->
+<div class="input-section">
+    <div class="label-with-info">
+        Lighting:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="lighting">
+            <span class="tooltip-text">Choose how your image should be lit. Different lighting options can dramatically change the mood and atmosphere of your image.</span>
+        </div>
+    </div>
+    <select id="lightingSelect" class="lighting-select">
+        <!-- Free Lighting Options -->
+        <option value="not_specified">Not specified</option>
+        <option value="natural">Natural</option>
+        <option value="studio">Studio</option>
+        <option value="dramatic">Dramatic</option>
+        <option value="backlight">Backlight</option>
+        <option value="soft">Soft</option>
+        <option value="hard">Hard</option>
+        <option value="cinematic">Cinematic</option>
+        <option value="low_key">Low Key</option>
+        <option value="high_key">High Key</option>
+
+        <!-- Premium Lighting Options -->
+        <option value="golden_hour">Golden Hour (Premium)</option>
+        <option value="neon">Neon Lighting (Premium)</option>
+        <option value="volumetric">Volumetric Light (Premium)</option>
+        <option value="silhouette">Silhouette Lighting (Premium)</option>
+        <option value="moonlight">Moonlight (Premium)</option>
+        <option value="bioluminescent">Bioluminescent (Premium)</option>
+        <option value="chiaroscuro">Chiaroscuro (Premium)</option>
+        <option value="rainbow">Rainbow Lighting (Premium)</option>
+        <option value="northern_lights">Northern Lights (Premium)</option>
+        <option value="laser">Laser Lighting (Premium)</option>
+        <option value="underwater_caustics">Underwater Caustics (Premium)</option>
+        <option value="fire_light">Fire Light (Premium)</option>
+        <option value="crystal_refraction">Crystal Refraction (Premium)</option>
+        <option value="star_field">Star Field (Premium)</option>
+        <option value="lightning">Lightning Flash (Premium)</option>
+    </select>
+</div>
+
+<!-- Camera Angle Selection -->
+<div class="input-section">
+    <div class="label-with-info">
+        Camera Angle:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="cameraAngle">
+            <span class="tooltip-text">Select the perspective from which your image will be viewed. Different angles can create various emotional impacts and visual interests.</span>
+        </div>
+    </div>
+    <select id="cameraAngleSelect" class="camera-angle-select">
+        <!-- Free Camera Angles -->
+        <option value="not_specified">Not specified</option>
+        <option value="wide_angle">Wide Angle</option>
+        <option value="close_up">Close Up</option>
+        <option value="eye_level">Eye Level</option>
+        <option value="low_angle">Low Angle</option>
+        <option value="high_angle">High Angle</option>
+        <option value="dutch_angle">Dutch Angle</option>
+        <option value="over_the_shoulder">Over the Shoulder</option>
+        <option value="birds_eye_view">Bird's Eye View</option>
+        <option value="worm_eye_view">Worm's Eye View</option>
+
+        <!-- Premium Camera Angles -->
+        <option value="fisheye">Fisheye (Premium)</option>
+        <option value="tilt_shift">Tilt-shift (Premium)</option>
+        <option value="macro">Macro (Premium)</option>
+        <option value="panoramic">Panoramic View (Premium)</option>
+        <option value="extreme_close_up">Extreme Close-Up (Premium)</option>
+        <option value="drone">Drone View (Premium)</option>
+        <option value="split_view">Split View (Premium)</option>
+        <option value="orbital">Orbital Shot (Premium)</option>
+        <option value="dolly_zoom">Dolly Zoom (Premium)</option>
+        <option value="underwater">Underwater (Premium)</option>
+        <option value="isometric">Isometric (Premium)</option>
+        <option value="first_person">First Person POV (Premium)</option>
+        <option value="symmetrical">Symmetrical (Premium)</option>
+        <option value="spiral">Spiral Shot (Premium)</option>
+        <option value="vertigo">Vertigo Effect (Premium)</option>
+    </select>
+</div>
+               <div class="input-section">
+    <div class="label-with-info">
+        AI Model:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" alt="Info" class="info-icon">
+            <span class="tooltip-text">Choose which AI image generation model to optimize your prompt for. Different models have different strengths and capabilities.</span>
+        </div>
+    </div>
+        <select id="modelSelect" name="model">
+                    <option value="not_specified" data-preview="">Not Specified</option>
+                    <option value="dalle">DALL·E</option>
+                    <option value="midjourney">Midjourney</option>
+                    <option value="stable_diffusion">Stable Diffusion</option>
+                    <option value="flux">Flux</option>
+                </select>
+            </div>
+       <div id="midjourneyParams" class="midjourney-params" style="display: none;">
+    <div class="param-group">
+        <h4>Model Version & Quality</h4>
+        <div class="param-buttons">
+            <button class="param-btn" data-param="--v 6.1">Version 6.1</button>
+            <button class="param-btn" data-param="--v 5.2">Version 5.2</button>
+            <button class="param-btn" data-param="--v 4">Version 4</button>
+            <button class="param-btn" data-param="--niji 6">Niji 6 (Anime)</button>
+            <button class="param-btn" data-param="--q 1">Quality 1</button>
+            <button class="param-btn" data-param="--q .5">Quality 0.5</button>
+            <button class="param-btn" data-param="--q .25">Quality 0.25</button>
+        </div>
+    </div>
+
+    <div class="param-group">
+        <h4>Style & Aesthetics</h4>
+        <div class="param-buttons">
+            <button class="param-btn" data-param="--style raw">Raw Style</button>
+            <button class="param-btn" data-param="--s 100">Stylize 100</button>
+            <button class="param-btn" data-param="--s 750">Stylize 750</button>
+            <button class="param-btn" data-param="--s 1000">Stylize 1000</button>
+            <button class="param-btn" data-param="--tile">Tile Mode</button>
+        </div>
+    </div>
+
+    <div class="param-group">
+        <h4>Creative Controls</h4>
+        <div class="param-buttons">
+            <button class="param-btn" data-param="--chaos 20">Chaos 20</button>
+            <button class="param-btn" data-param="--chaos 50">Chaos 50</button>
+            <button class="param-btn" data-param="--weird 1000">Weird 1000</button>
+            <button class="param-btn" data-param="--stop 90">Stop 90%</button>
+            <button class="param-btn" data-param="--video">Create Video</button>
+        </div>
+    </div>
+
+    <div class="param-group">
+        <h4>Aspect Ratio</h4>
+        <div class="param-input-group">
+            <input type="number" id="arWidth" min="1" max="99" value="16" class="param-number">
+            <span>:</span>
+            <input type="number" id="arHeight" min="1" max="99" value="9" class="param-number">
+            <button class="param-btn" id="arButton" data-param="--ar">Set Ratio</button>
+        </div>
+    </div>
+
+    <div class="param-group">
+        <h4>Stylize Value</h4>
+        <div class="param-input-group">
+            <input type="number" id="styleMix" min="0" max="1000" value="100" class="param-number">
+            <button class="param-btn" id="styleMixButton" data-param="--s">Set Style</button>
+        </div>
+    </div>
+
+    <div class="param-group">
+        <h4>Reference Strength</h4>
+        <div class="param-input-group">
+            <input type="number" id="refStrength" min="0" max="100" value="50" class="param-number">
+            <button class="param-btn" id="refStrengthButton" data-param="--cw">Set Strength</button>
+        </div>
+    </div>
+
+    <div class="param-group">
+        <h4>Seed</h4>
+        <div class="param-input-group">
+            <input type="number" id="seedValue" min="0" max="4294967295" placeholder="Random" class="param-number">
+            <button class="param-btn" id="seedButton" data-param="--seed">Set Seed</button>
+        </div>
+    </div>
+
+    <div class="param-group">
+        <h4>Exclude Elements</h4>
+        <div class="param-input-group">
+            <input type="text" id="excludeValue" placeholder="e.g., trees, water" class="param-text">
+            <button class="param-btn" id="excludeButton" data-param="--no">Set Exclusions</button>
+        </div>
+    </div>
+</div>
+   </div>
+            <!-- Video Mode Inputs -->
+<!-- Replace or update the video input section -->
+<div class="video-input input-section">
+    <div class="label-with-info">
+        Video Description:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="video">
+            <span class="tooltip-text">Describe the video scene, actions, and transitions you want to create.</span>
+        </div>
+    </div>
+    <div class="input-wrapper">
+      
+        <input type="text" id="videoPromptInput" placeholder="Describe the video scene you want to create...">
+        <span id="videoClearButton" class="clear-button" style="display: none;">×</span>
+    </div>
+</div>
+
+<div class="video-input input-section">
+    <div>Prompt Length:</div>
+    <div class="slider-container" id="video-slider-container">
+        <input type="range" min="1" max="3" value="2" class="slider" id="videoPromptLength">
+        <div class="slider-labels">
+            <span>Short</span>
+            <span>Medium</span>
+            <span>Long</span>
+        </div>
+    </div>
+</div>
+
+<div class="video-input input-section">
+    <div class="label-with-info" id="VideoStyle">
+        Video Style:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="videoStyle">
+            <span class="tooltip-text">Choose the visual style for your video scene.</span>
+        </div>
+    </div>
+    <select id="videoStyleSelect">
+        <option value="not_specified">Not Specified</option>
+        <option value="cinematic">Cinematic</option>
+        <option value="documentary">Documentary</option>
+        <option value="music_video">Music Video</option>
+        <option value="animation">Animation</option>
+        <!-- Premium Options -->
+        <option value="aerial">Aerial (Premium)</option>
+        <option value="experimental">Experimental (Premium)</option>
+        <option value="slow_motion">Slow Motion (Premium)</option>
+        <option value="time_lapse">Time Lapse (Premium)</option>
+    </select>
+</div>
+
+<div class="video-input input-section">
+    <div class="label-with-info">
+        Camera Movement:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="movement">
+            <span class="tooltip-text">Choose how the camera moves through the scene.</span>
+        </div>
+    </div>
+    <select id="videoMovementSelect">
+        <option value="not_specified">Not Specified</option>
+        <option value="static">Static</option>
+        <option value="pan">Pan</option>
+        <option value="tracking_shot">Tracking Shot</option>
+        <option value="dolly">Dolly</option>
+        <option value="crane_shot">Crane Shot</option>
+        <!-- Premium Options -->
+        <option value="orbit">Orbit (Premium)</option>
+        <option value="drone_fly">Drone Fly (Premium)</option>
+        <option value="steadicam">Steadicam (Premium)</option>
+        <option value="vertical">Vertical (Premium)</option>
+    </select>
+</div>
+<div class="video-input input-section">
+    <div class="label-with-info">
+        Lighting:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="lighting">
+            <span class="tooltip-text">Choose how your video scene should be lit. Different lighting options can dramatically change the mood and atmosphere.</span>
+        </div>
+    </div>
+    <select id="videoLightingSelect">
+        <!-- Free Options -->
+        <option value="not_specified">Not Specified</option>
+        <option value="natural">Natural</option>
+        <option value="studio">Studio</option>
+        <option value="dramatic">Dramatic</option>
+        <option value="backlight">Backlight</option>
+        <option value="soft">Soft</option>
+        <option value="hard">Hard</option>
+        <option value="cinematic">Cinematic</option>
+        <option value="low_key">Low Key</option>
+        <option value="high_key">High Key</option>
+
+        <!-- Premium Options -->
+        <option value="golden_hour">Golden Hour (Premium)</option>
+        <option value="neon">Neon Lighting (Premium)</option>
+        <option value="volumetric">Volumetric Light (Premium)</option>
+        <option value="silhouette">Silhouette Lighting (Premium)</option>
+        <option value="moonlight">Moonlight (Premium)</option>
+        <option value="bioluminescent">Bioluminescent (Premium)</option>
+        <option value="chiaroscuro">Chiaroscuro (Premium)</option>
+        <option value="rainbow">Rainbow Lighting (Premium)</option>
+        <option value="northern_lights">Northern Lights (Premium)</option>
+        <option value="laser">Laser Lighting (Premium)</option>
+    </select>
+</div>
+<div class="video-input input-section">
+    <div class="label-with-info">
+        Camera Angle:
+        <div class="tooltip">
+            <img src="icons/info-icon.svg" class="info-icon" data-category="cameraAngle">
+            <span class="tooltip-text">Select the perspective from which your video will be filmed.</span>
+        </div>
+    </div>
+    <select id="videoCameraAngleSelect">
+        <option value="not_specified">Not Specified</option>
+        <option value="wide_angle">Wide Angle</option>
+        <option value="close_up">Close Up</option>
+        <option value="eye_level">Eye Level</option>
+        <option value="low_angle">Low Angle</option>
+        <option value="high_angle">High Angle</option>
+        <option value="dutch_angle">Dutch Angle</option>
+        <option value="over_the_shoulder">Over the Shoulder</option>
+        <option value="birds_eye_view">Bird's Eye View</option>
+        <option value="worm_eye_view">Worm's Eye View</option>
+        <option value="fisheye" disabled>Fisheye (Premium)</option>
+        <option value="tilt_shift" disabled>Tilt-shift (Premium)</option>
+        <option value="drone_view" disabled>Drone View (Premium)</option>
+        <option value="orbital_shot" disabled>Orbital Shot (Premium)</option>
+        <option value="dolly_zoom" disabled>Dolly Zoom (Premium)</option>
+    </select>
+</div>
+
+        <div class="button-container-main">
+            <!-- Dice Icon Button for Random Prompt -->
+            <button id="randomPrompt" class="dice-btn" title="Random Prompts">
+                <img src="icons/dice-icon.svg" alt="Random" />
+            </button>
+
+            <!-- Generate Prompt Button -->
+            <button id="generatePrompt">
+    <div class="button-shine"></div>
+    Generate Prompts
+</button>
+        </div>
+
+        <button id="getPremium" class="premium-btn animate-premium-gradient">Get Premium</button>
+        <!-- Add tabs here -->
+<div class="tabs">
+    <!-- Generated Prompts Tab -->
+    <button id="generatedTab" class="tab-button active" title="Generated Prompts">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+        </svg>
+    </button>
+
+    <!-- History Tab -->
+    <button id="historyTab" class="tab-button" title="History">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"/>
+        </svg>
+    </button>
+
+    <!-- Weekly Prompts Tab -->
+    <button id="weeklyTab" class="tab-button" title="Prompts of the Week">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+        </svg>
+    </button>
+</div>
+
+<div class="info-box" id="infoBox" style="display: none;">
+  <!--  <img src="icons/info-icon.svg" alt="Info" class="info-icon"> -->
+    <p>All prompts are for Midjourney</p>
+</div>
+
+
+
+        <!-- Loading animation section -->
+        <div id="loading" class="loading-container" style="display: none;">
+            <div class="spinner"></div>
+            <p>Generating prompts, please wait...</p>
+        </div>
+
+        <!-- Section to display the generated prompts -->
+        <div id="generatedPrompts" class="tab-content active">
+            <div id="result"></div>
+        </div>
+
+        <!-- Section to display the history of prompts -->
+        <div id="historyPrompts" class="tab-content">
+            <div class="history-search-container">
+    <div class="search-input-wrapper">
+        <img src="icons/search-icon.svg" alt="Search" class="search-icon">
+        <input type="text" id="historySearch" placeholder="Search history...">
+        <span id="clearHistorySearch" class="clear-search-button" style="display: none;">×</span>
+    </div>
+</div>
+            <div id="historyContent"></div>
+        </div>
+
+        <!-- Section to display Prompts of the Week -->
+            <div id="weeklyPrompts" class="tab-content"> </div>
+
+        <!-- Preview box for image hover -->
+        <div id="previewBox" class="preview-box" style="display: none;">
+            <img id="previewImage" src="" alt="Preview" />
+        </div>
+    </div>
+        <div id="ratePopup" class="rate-popup">
+    <div class="rate-popup-content">
+        <div class="rate-popup-header">
+            <h3>Enjoying Prompt Catalyst?</h3>
+            <span class="rate-close">×</span>
+        </div>
+        <div class="rate-popup-body">
+            <p>If you're finding Prompt Catalyst helpful, we'd love your feedback! Would you take a moment to rate us on the Chrome Web Store?</p>
+            <div class="rate-stars">
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+            </div>
+        </div>
+        <div class="rate-popup-footer">
+            <button class="rate-later-btn">Maybe Later</button>
+            <button class="rate-now-btn">
+                <span class="shine"></span>
+                Rate Now
+            </button>
+        </div>
+    </div>
+</div>
+        <div class="help-container">
+    <div class="help-icon" title="Need help?">
+        <img src="icons/help-icon.svg" alt="Help">
+    </div>
+            <!--
+    <a href="https://discord.gg/dywqWGFq" target="_blank" class="discord-icon" title="Join our Discord">
+        <img src="icons/discord-icon.svg" alt="Discord">
+    </a>
+-->
+</div>
+<div id="helpPopup" class="help-popup">
+    <div class="help-popup-content">
+        <div class="help-popup-header">
+            <h3>Need Help?</h3>
+            <span class="help-close">×</span>
+        </div>
+        <div class="help-popup-body">
+            <p>Have suggestions, found a bug, or need help? Feel free to reach out!</p>
+            <div class="contact-email">
+                <img src="icons/email-icon.svg" alt="Email">
+                <span>support@catalystmedia.ai</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add this HTML to your popup.html, after the closing tag of your #previewBox -->
+<div id="extendPopup" class="extend-popup" style="display: none;">
+  <div class="extend-popup-content">
+    <div class="extend-popup-header">
+      <h3>Add Details to Extend Prompt</h3>
+      <span class="extend-close">&times;</span>
+    </div>
+    <div class="extend-popup-body">
+      <div class="extend-input-group">
+        <label for="additionalStyle">Additional Style Elements:</label>
+        <input type="text" id="additionalStyle" placeholder="e.g., vintage tones, ethereal atmosphere">
+      </div>
+      <div class="extend-input-group">
+        <label for="additionalLighting">Additional Lighting Details:</label>
+        <input type="text" id="additionalLighting" placeholder="e.g., soft rim light, colored shadows">
+      </div>
+      <div class="extend-input-group">
+        <label for="additionalObjects">Additional Objects/Elements:</label>
+        <input type="text" id="additionalObjects" placeholder="e.g., floating crystals, misty background">
+      </div>
+      <div class="extend-input-group">
+        <label for="additionalMood">Mood/Atmosphere:</label>
+        <input type="text" id="additionalMood" placeholder="e.g., mysterious, serene">
+      </div>
+    </div>
+    <div class="extend-popup-footer">
+      <button id="extendConfirm" class="extend-confirm-btn">Extend Prompt</button>
+      <button id="extendCancel" class="extend-cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+<div id="profilePopup" class="profile-popup">
+    <div class="profile-popup-content">
+        <div class="profile-popup-header">
+            <h3>My Profile</h3>
+            <span class="profile-close">&times;</span>
+        </div>
+        
+        <div class="profile-popup-body">
+            <div class="profile-section">
+                <h4>Account Settings</h4>
+                <div class="profile-input-group">
+                    <label for="usernameInput">Display Name</label>
+                    <div class="input-with-button">
+                        <input type="text" id="usernameInput" placeholder="Enter display name">
+                        <button id="saveUsername" class="save-username-btn">Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h4>
+                    Credits
+                    <button id="refreshCredits" class="refresh-credits-btn" title="Refresh Credits">
+                        <img src="icons/refresh-icon.svg" alt="Refresh">
+                    </button>
+                </h4>
+                <div class="credits-info">
+                    <div class="credits-row">
+                        <span class="credits-label">Available Credits:</span>
+                        <span id="creditCount" class="credits-value">Loading...</span>
+                    </div>
+                    <div class="credits-row">
+                        <span class="credits-label">Reset Type:</span>
+                        <span id="creditResetType" class="credits-value">Loading...</span>
+                    </div>
+                    <div class="subscription-row">
+                        <a href="#" id="subscriptionLink" class="subscription-link">
+                            <span class="subscription-text">Loading...</span>
+                            <img src="icons/chevron-right.svg" alt=">" class="chevron-icon-right">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="videoPremiumPopup" class="premium-popup" style="display: none;">
+    <div class="premium-popup-content">
+        <div class="limit-reached-prompt">
+            <span class="premium-close">×</span>
+            <h3>Video Mode is Premium Only for Now</h3>
+            <p>Upgrade to Premium to unlock video prompt generation and many more features!</p>
+            <div class="features-list">
+                <div class="feature-item">
+                    <svg class="feature-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                    <span>Generate professional video prompts</span>
+                </div>
+                <div class="feature-item">
+                    <svg class="feature-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                    <span>Advanced camera movements & video styles</span>
+                </div>
+                <div class="feature-item">
+                    <svg class="feature-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                    <span>Premium image prompting features included</span>
+                </div>
+            </div>
+            <button class="upgrade-btn">
+                <span class="shine"></span>
+                Upgrade to Premium
+            </button>
+        </div>
+    </div>
+</div>
+    <!-- Order matters: pc-auth and pc-api read PC_CONFIG at load. -->
+    <script src="scripts/pc-config.js"></script>
+    <script src="scripts/pc-auth.js"></script>
+    <script src="scripts/pc-api.js"></script>
+    <script src="scripts/popup.js"></script>
+</body>
+</html>

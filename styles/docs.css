@@ -1,0 +1,452 @@
+/* Base theme variables */
+:root {
+    --background: #171717;
+    --cardBackground: #1e1e1e;
+    --primary: #42f56f;
+    --secondary: #31db8a;
+    --text: #f5f5f5;
+    --textSecondary: #888;
+    --border: #333;
+    --inputBackground: #1e1e1e;
+    --inputBorder: #555;
+    --shadow: rgba(0, 0, 0, 0.2);
+    --gradientStart: rgba(66, 245, 111, 0.05);
+    --gradientEnd: rgba(49, 219, 138, 0.05);
+}
+
+/* Typography improvements */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/* styles/docs.css */
+/* ... other styles ... */
+
+.examples-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  border-radius: 10px; /* Rounded corners for the table */
+  overflow: hidden; /* Ensures the rounded corners are visible */
+}
+
+.examples-table th {
+  background-color: #181818; /* Dark background for header */
+  color: #f5f5f5; /* Light text color for header */
+  font-weight: 600;
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 2px solid #333; /* Subtle border below header */
+}
+
+.examples-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #333;
+  background-color: #282828; /* Slightly lighter background for body rows */
+  color: #ddd; /* Light text color for readability */
+  vertical-align: middle; /* Vertically align content to the middle */
+}
+
+.examples-table tbody tr:nth-child(even) {
+  background-color: #222; /* Even darker background for every other row */
+}
+
+.examples-table img {
+  display: block; /* Makes the image a block element */
+  margin: 0 auto; /* Centers the image horizontally */
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px; /* Slightly rounded corners for images */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for images */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .examples-table th,
+  .examples-table td {
+    padding: 10px; /* Reduce padding on smaller screens */
+    font-size: 14px; /* Slightly reduce font size */
+  }
+
+  .examples-table img {
+    max-width: 120px; /* Further constrain image width on smaller screens */
+  }
+}
+/* Enhanced container */
+.docs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 30px 60px 310px; /* Added left padding to accommodate sidebar */
+    position: relative;
+}
+
+/* Improved header styling */
+.docs-header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, var(--gradientStart), var(--gradientEnd));
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.docs-header h1 {
+    font-size: 3em;
+    color: var(--primary);
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+}
+
+.docs-header p {
+    color: var(--textSecondary);
+    font-size: 1.25em;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Enhanced section styling */
+.docs-section {
+    background: var(--cardBackground);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 40px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+
+/* Improved headings */
+.docs-section h2 {
+    color: var(--primary);
+    margin: 0 0 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border);
+    font-size: 2em;
+    letter-spacing: -0.5px;
+}
+
+.docs-section h3 {
+    color: var(--text);
+    margin: 35px 0 20px;
+    font-size: 1.5em;
+    letter-spacing: -0.3px;
+}
+
+/* Enhanced feature list */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 20px;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(66, 245, 111, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(66, 245, 111, 0.1);
+}
+
+.feature-list li:before {
+    content: "→";
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Improved premium feature boxes */
+.premium-feature {
+    background: linear-gradient(135deg, rgba(66, 245, 111, 0.08), rgba(49, 219, 138, 0.08));
+    border-radius: 12px;
+    padding: 25px;
+    margin: 20px 0;
+    border: 1px solid rgba(66, 245, 111, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+.msct {
+    margin-right: 10px;
+    margin-top: 20px;
+}
+.titleelm {
+    display: flex;
+     align-items: center;
+    justify-content:center;
+    margin-right: 90px;
+}
+.premium-feature::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, transparent, rgba(66, 245, 111, 0.1));
+    border-radius: 0 0 0 100%;
+}
+.headerelm {
+    display: flex;
+   
+}
+/* Enhanced code blocks */
+code {
+    background: rgba(66, 245, 111, 0.1);
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: var(--primary);
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    border: 1px solid rgba(66, 245, 111, 0.2);
+}
+
+/* Improved tables */
+.shortcut-table, .component-table, .theme-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 25px 0;
+}
+
+.shortcut-table th,
+.shortcut-table td,
+.component-table th,
+.component-table td,
+.theme-table th,
+.theme-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.shortcut-table th,
+.component-table th,
+.theme-table th {
+    color: var(--primary);
+    font-weight: 600;
+    background: rgba(66, 245, 111, 0.05);
+    border-bottom: 2px solid var(--border);
+}
+
+/* Enhanced tip boxes */
+.tip-box {
+    background: rgba(66, 245, 111, 0.05);
+    border-left: 4px solid var(--primary);
+    padding: 25px;
+    margin: 30px 0;
+    border-radius: 0 12px 12px 0;
+    position: relative;
+}
+
+.tip-box::before {
+    content: '💡';
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    background: var(--cardBackground);
+    padding: 8px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+}
+
+/* Improved navigation */
+.docs-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--cardBackground);
+    border-right: 1px solid var(--border);
+    padding: 10px 30px 30px; /* Added top padding for better spacing */
+    overflow-y: auto;
+    box-shadow: 2px 0 10px var(--shadow);
+    z-index: 100;
+}
+
+.docs-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.docs-nav li {
+    margin-bottom: 12px;
+}
+.docs-nav a {
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.docs-nav a:hover {
+    background-color: rgba(66, 245, 111, 0.1);
+    color: var(--primary);
+    border-color: rgba(66, 245, 111, 0.2);
+}
+
+.docs-nav a.active {
+    background-color: rgba(66, 245, 111, 0.15);
+    color: var(--primary);
+    border-color: rgba(66, 245, 111, 0.3);
+    font-weight: 500;
+}f.docs-header 
+
+/* Footer improvements */
+.docs-footer {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--textSecondary);
+}
+
+.footer-links {
+    margin-top: 20px;
+}
+
+.footer-links a {
+    color: var(--primary);
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--secondary);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .docs-container {
+        padding: 20px;
+    }
+
+    .docs-section {
+        padding: 25px;
+    }
+
+    .docs-nav {
+        display: none;
+    }
+
+    .docs-header {
+        padding: 30px 15px;
+        margin-bottom: 40px;
+    }
+
+    .docs-header h1 {
+        font-size: 2em;
+    }
+
+    .feature-list {
+        gap: 15px;
+    }
+
+    .shortcut-table,
+    .component-table,
+    .theme-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+@media (max-width: 1024px) {
+    .docs-container {
+        padding: 60px 30px; /* Remove left padding on smaller screens */
+    }
+
+    .docs-nav {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .docs-nav.active {
+        transform: translateX(0);
+    }
+
+    /* Add hamburger menu for mobile */
+    .nav-toggle {
+        display: block;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        background: var(--cardBackground);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .nav-toggle:hover {
+        background: rgba(66, 245, 111, 0.1);
+    }
+}
+
+@media (min-width: 1025px) {
+    .nav-toggle {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .docs-container {
+        padding: 20px;
+    }
+
+    .docs-section {
+        padding: 25px;
+    }
+
+    .docs-header {
+        padding: 30px 15px;
+        margin-bottom: 40px;
+    }
+}
+.docs-nav::-webkit-scrollbar {
+    width: 8px;
+}
+
+.docs-nav::-webkit-scrollbar-track {
+    background: var(--cardBackground);
+}
+
+.docs-nav::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+/* Print styles */
+@media print {
+    .docs-nav {
+        display: none;
+    }
+
+    .docs-container {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .docs-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
