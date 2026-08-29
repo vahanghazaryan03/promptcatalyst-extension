@@ -335,22 +335,6 @@ function createThemeAwarePromptBox(promptText, isHistory = false, isInCollection
 
     return promptBox;
 }
-function updateButtonState(button, disabled) {
-    const currentTheme = themes[localStorage.getItem('selectedTheme') || 'default'];
-    
-    if (disabled) {
-        button.classList.add('disabled');
-        button.style.backgroundColor = currentTheme.colors.secondary;
-        button.style.opacity = '0.7';
-        button.style.cursor = 'not-allowed';
-    } else {
-        button.classList.remove('disabled');
-        button.style.backgroundColor = currentTheme.colors.primary;
-        button.style.opacity = '1';
-        button.style.cursor = 'pointer';
-    }
-}
-
     // Add message listener
 chrome.runtime.onMessage.addListener((request) => {
     if (request.action === 'updateCustomBackground') {
@@ -1229,40 +1213,6 @@ function handleGenerationError(error) {
     console.error('Error generating video prompt:', error);
     resultElem.textContent = 'An error occurred. Please try again.';
 }
-// Handle video prompt display
-function displayVideoPrompt(prompt) {
-    const resultElem = document.getElementById('result');
-    resultElem.innerHTML = '';
-    
-    const promptBox = createVideoPromptBox(prompt);
-    resultElem.appendChild(promptBox);
-}
-
-function createVideoPromptBox(prompt) {
-    const box = document.createElement('div');
-    box.className = 'prompt-box video-prompt';
-    
-    // Create prompt text
-    const promptText = document.createElement('p');
-    promptText.className = 'prompt-text';
-    promptText.textContent = prompt;
-    
-    // Create button container
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'button-container';
-    
-    // Add Copy button
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'copy-btn';
-    copyBtn.innerHTML = '<img src="icons/copy-icon.svg" alt="Copy"><span>Copy</span>';
-    copyBtn.addEventListener('click', () => copyToClipboard(prompt, copyBtn));
-    
-    buttonContainer.appendChild(copyBtn);
-    box.appendChild(promptText);
-    box.appendChild(buttonContainer);
-    
-    return box;
-}
 // Add this function to handle model dropdown rebuilding
 function rebuildModelDropdown(isPremiumUser) {
     const modelSelect = document.getElementById('modelSelect');
@@ -1446,28 +1396,6 @@ Object.entries(themes).forEach(([themeId, theme]) => {
     }
 });
 
-function getVideoInputs() {
-    const videoPromptInput = document.getElementById('videoPromptInput');
-    const videoStyleSelect = document.getElementById('videoStyleSelect');
-    const videoMovementSelect = document.getElementById('videoMovementSelect');
-    const videoCameraAngleSelect = document.getElementById('videoCameraAngleSelect');
-    const videoPromptLength = document.getElementById('videoPromptLength');
-
-    // Get values and add error checking
-    const description = videoPromptInput?.value?.trim();
-    if (!description) {
-        throw new Error('Please enter a video description');
-    }
-
-    return {
-        description: description,
-        style: videoStyleSelect?.value || 'not_specified',
-        movement: videoMovementSelect?.value || 'not_specified',
-        cameraAngle: videoCameraAngleSelect?.value || 'not_specified',
-        promptLength: videoPromptLength ? getPromptLengthLabel(videoPromptLength.value) : 'medium'
-    };
-}
-
 function isVideoMode() {
     return document.querySelector('.container').classList.contains('video-mode');
 }
@@ -1621,15 +1549,13 @@ chrome.storage.local.get(['authToken'], (result) => {
         startCreditUpdates();
     }
 });
-function startTokenRefreshInterval() {
-    // Only start the interval if the user is logged in
-    chrome.storage.local.get(['authToken'], (result) => {
-        if (result.authToken) {
-            // Refresh token every 50 minutes for logged-in users
-            setInterval(refreshToken, 3000000);
-        }
-    });
-}
+/**
+ * There is no refresh timer any more.
+ *
+ * pcAuth refreshes the session when a token is handed out, so a 50-minute
+ * interval could only ever duplicate that — and racing it risks spending the
+ * same rotating refresh token twice, which signs the user out.
+ */
 let isGenerating = false;
 document.addEventListener('keydown', handleEnterKey);
       const userStatus = document.getElementById('userStatus');
@@ -2176,61 +2102,6 @@ function updatePromptParameters() {
             }
         });
     }
-}
-
-function isValidParameter(param) {
-    // Add validation for Midjourney parameter format
-    return /^--[a-zA-Z]+(?::\d+(?:\.\d+)?)?(?:\s+[\d.:]+)*$/.test(param);
-}
-function toggleParameter(param, button) {
-    if (!isValidParameter(param)) {
-        console.warn('Invalid parameter format:', param);
-        return;
-    }
-
-    // Special handling for style parameters (--s)
-    if (param.startsWith('--s ')) {
-        // Remove any existing style parameters
-        activeParams.forEach(p => {
-            if (p.startsWith('--s ')) {
-                const existingButton = document.querySelector(`[data-param="${p}"]`);
-                if (existingButton) {
-                    existingButton.classList.remove('active');
-                }
-                activeParams.delete(p);
-            }
-        });
-
-        // Add the new style parameter
-        if (!button.classList.contains('active')) {
-            button.classList.add('active');
-            activeParams.add(param);
-        }
-    } else {
-        // Handle other parameters normally
-        if (button.classList.contains('active')) {
-            button.classList.remove('active');
-            activeParams.delete(param);
-        } else {
-            // For parameters that should be unique (like --v), remove existing ones
-            if (param.startsWith('--v ') || param.startsWith('--q ')) {
-                activeParams.forEach(p => {
-                    if (p.startsWith(param.split(' ')[0])) {
-                        const existingButton = document.querySelector(`[data-param="${p}"]`);
-                        if (existingButton) {
-                            existingButton.classList.remove('active');
-                        }
-                        activeParams.delete(p);
-                    }
-                });
-            }
-            button.classList.add('active');
-            activeParams.add(param);
-        }
-    }
-
-    updatePromptParameters();
-    saveMidjourneyParams();
 }
 
 // Additional function to add parameters to new prompts
@@ -3220,7 +3091,6 @@ styleRefsTab.appendChild(svgIcon);
 
     const infoBox = document.getElementById('infoBox');
     
-     startTokenRefreshInterval();
 
     // Ensure main content is visible and login form is hidden initially
      mainContent.style.display = 'block';
@@ -3253,18 +3123,18 @@ styleRefsTab.appendChild(svgIcon);
         console.error('Chrome Storage API is not available. Are you testing in a non-extension environment?');
     }
 // Add these variables at the top of your popup.js file
+/**
+ * Drops the style-reference library cached from the old server.
+ *
+ * There is nothing to cache any more — the tab shows a link to the website — but
+ * anyone updating still has the old payload and its expiry sitting in
+ * localStorage, so it is cleared once and for all.
+ */
 const STYLE_REFS_CACHE_KEY = 'styleReferencesCache';
 const STYLE_REFS_CACHE_EXPIRY_KEY = 'styleReferencesCacheExpiry';
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 function clearStyleReferencesCache() {
     localStorage.removeItem(STYLE_REFS_CACHE_KEY);
     localStorage.removeItem(STYLE_REFS_CACHE_EXPIRY_KEY);
-}
-
-// Add this to handle cache invalidation when user logs in/out
-function invalidateStyleReferencesCache() {
-    clearStyleReferencesCache();
-    loadStyleReferences(true); // Force refresh
 }
 /**
  * Style references moved to the web app.
@@ -3274,10 +3144,8 @@ function invalidateStyleReferencesCache() {
  * then show "Please try again" for a failure that retrying cannot fix, the tab
  * says where the codes actually are. Any stale cache from the old server is
  * dropped for the same reason: it describes a library nothing can refresh.
- *
- * The `forceRefresh` parameter is kept because two callers pass it.
  */
-async function loadStyleReferences(forceRefresh = false) {
+function loadStyleReferences() {
     const styleRefsContainer = document.querySelector('.style-refs-container');
     const loadingElem = document.getElementById('loading');
 
@@ -3306,135 +3174,9 @@ async function loadStyleReferences(forceRefresh = false) {
     }
 }
 
-// Add this new function to handle the display logic separately
-function displayStyleReferences(styles) {
-    const styleRefsContainer = document.querySelector('.style-refs-container');
-    if (!styleRefsContainer) return;
-    
-    styleRefsContainer.innerHTML = '';
-
-    // Add info text with fullscreen button at the top
-    const infoText = document.createElement('div');
-    infoText.className = 'style-refs-info';
-    infoText.innerHTML = `
-        These are Midjourney Style Reference codes. Add them to your prompts to influence the visual style.
-        <button class="fullscreen-btn">
-            <img src="icons/expand.svg" alt="Fullscreen">
-            <span>Open Full View</span>
-        </button>
-    `;
-    styleRefsContainer.appendChild(infoText);
-    document.querySelector('.fullscreen-btn').addEventListener('click', function() {
-        window.open('https://promptcatalyst.ai/style-codes', '_blank');
-    });
-    chrome.storage.local.get(['isPremiumUser'], (result) => {
-        const isPremiumUser = result.isPremiumUser || false;
-        
-        // Separate free and premium styles
-        const freeStyles = styles.filter(style => !style.isPremium);
-        const premiumStyles = styles.filter(style => style.isPremium);
-
-        if (isPremiumUser) {
-            // Show all styles for premium users
-            styles.forEach(style => {
-                const card = createStyleCard(style);
-                styleRefsContainer.appendChild(card);
-            });
-        } else {
-            // Show free styles + teaser for free users
-            freeStyles.forEach(style => {
-                const card = createStyleCard(style);
-                styleRefsContainer.appendChild(card);
-            });
-
-            // Add premium teaser card
-            const teaserCard = createPremiumTeaserCard();
-            styleRefsContainer.appendChild(teaserCard);
-        }
-    });
-}
-
-    function createPremiumTeaserCard() {
-    const teaserCard = document.createElement('div');
-    teaserCard.className = 'style-ref-card premium-preview-card';
-    
-    teaserCard.innerHTML = `
-        <div class="premium-card-content">
-            <img src="../previews/premium-style-teaser.png" alt="Premium styles preview" class="teaser-image" loading="lazy">
-            <div class="premium-overlay">
-                <h3>100+ Premium Style Codes Available</h3>
-                <p>Upgrade to Premium to unlock exclusive style reference codes! New styles added every day.</p>
-                <button class="premium-upgrade-btn">
-                    <span class="shine"></span>
-                    Get Premium
-                </button>
-            </div>
-        </div>
-    `;
-
-    // Add click handler for the upgrade button
-    teaserCard.querySelector('.premium-upgrade-btn').addEventListener('click', () => {
-        window.open('https://promptcatalyst.ai/premium', '_blank');
-    });
-
-    return teaserCard;
-}
-
-function createStyleCard(style) {
-    const card = document.createElement('div');
-    card.className = 'style-ref-card';
-
-    const premiumBadge = style.isPremium ? 
-        '<div class="premium-badge">Premium</div>' : '';
-
-    card.innerHTML = `
-        ${premiumBadge}
-        <div class="card-image">
-            <img src="${style.image}" alt="${style.description}" loading="lazy">
-        </div>
-        <div class="style-ref-info">
-            <p class="style-description">${style.description}</p>
-            <div class="style-ref-code-container">
-                <code class="style-ref-code">${style.code}</code>
-                <button class="copy-btn" data-code="${style.code}">
-                    <img src="icons/copy-icon.svg" alt="Copy">
-                    <span>Copy</span>
-                </button>
-            </div>
-        </div>
-    `;
-
-    const copyBtn = card.querySelector('.copy-btn');
-    copyBtn.addEventListener('click', () => {
-        copyToClipboard(style.code);
-    });
-
-    return card;
-}
-function displayError(message) {
-    const styleRefsContainer = document.querySelector('.style-refs-container');
-    if (!styleRefsContainer) return;
-
-    styleRefsContainer.innerHTML = `
-        <div class="error-message">
-            <p>${message}</p>
-            <button onclick="loadStyleReferences()" class="retry-btn">
-                Try Again
-            </button>
-        </div>
-    `;
-}
-
- // Modify the tab switching logic for style references
 styleRefsTab.addEventListener('click', function() {
-    const lastRefresh = localStorage.getItem(STYLE_REFS_CACHE_EXPIRY_KEY);
-    const now = Date.now();
-    
-    // Force refresh if cache is expired or doesn't exist
-    const forceRefresh = !lastRefresh || now >= parseInt(lastRefresh);
-    
     switchTab('styleRefs');
-    loadStyleReferences(forceRefresh);
+    loadStyleReferences();
 });
     
    function createCollectionsTab() {
@@ -4710,7 +4452,7 @@ submitLogin.addEventListener('click', async () => {
          * token, is stored by pcAuth.
          */
         await pcAuth.signIn(email, password);
-        invalidateStyleReferencesCache();
+        clearStyleReferencesCache();
         await completeSignIn();
     } catch (error) {
         loginMessage.textContent = error.message || 'Sign-in failed. Please check your credentials.';
@@ -4786,14 +4528,6 @@ async function completeSignIn() {
         // Update UI for login status
         updateUIForLoginStatus();
 
-        // Force refresh style references if on the Style Codes tab
-        const styleRefsTab = document.getElementById('styleRefsTab');
-        if (styleRefsTab.classList.contains('active')) {
-            localStorage.removeItem(STYLE_REFS_CACHE_KEY);
-            localStorage.removeItem(STYLE_REFS_CACHE_EXPIRY_KEY);
-            await loadStyleReferences(true);
-        }
-
         // Restore saved selections after rebuilding dropdowns
         loadSelections();
 
@@ -4816,7 +4550,7 @@ if (googleSignInBtn) {
 
         try {
             await pcAuth.signInWithGoogle();
-            invalidateStyleReferencesCache();
+            clearStyleReferencesCache();
             await completeSignIn();
         } catch (error) {
             // Closing the window is a decision, not a fault worth shouting about.
@@ -4830,7 +4564,7 @@ if (googleSignInBtn) {
 }
 // Update the logout event listener
 logoutIcon.addEventListener('click', () => {
-     invalidateStyleReferencesCache();
+    clearStyleReferencesCache();
     /**
      * pcAuth.signOut clears the session locally first and only then tells
      * Supabase, so a network failure cannot leave someone looking at a
@@ -4895,13 +4629,6 @@ logoutIcon.addEventListener('click', () => {
             }
         }
 
-        // Force refresh style references if on that tab
-        const styleRefsTab = document.getElementById('styleRefsTab');
-        if (styleRefsTab.classList.contains('active')) {
-            localStorage.removeItem(STYLE_REFS_CACHE_KEY);
-            localStorage.removeItem(STYLE_REFS_CACHE_EXPIRY_KEY);
-            loadStyleReferences(true);
-        }
 
         // Update the UI for login status
         updateUIForLoginStatus();
@@ -6385,61 +6112,6 @@ collectionsTab.addEventListener('click', () => {
     // Function to get prompt length label
 
 
-function refreshQuickAddButton(btn, promptText, theme) {
-    // Create a new button to replace the old one (to clean up all event listeners)
-    const newBtn = btn.cloneNode(true);
-    const imgElement = newBtn.querySelector('img');
-    
-    // Set up the button state
-    const isInAnyCollection = collectionsManager.isPromptInAnyCollection(promptText);
-    imgElement.src = isInAnyCollection ? 'icons/star-filled.svg' : 'icons/star-empty.svg';
-    newBtn.title = isInAnyCollection ? 'In Collection' : 'Add to Collection';
-    
-    // Add single event listener with error handling
-    newBtn.addEventListener('click', async (e) => {
-        try {
-            e.stopPropagation();
-            e.preventDefault();
-            
-            // Debounce the click
-            if (newBtn.dataset.processing === 'true') {
-                return;
-            }
-            
-            newBtn.dataset.processing = 'true';
-            
-            // Add visual feedback
-            newBtn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                newBtn.style.transform = 'scale(1)';
-            }, 100);
-            
-            await collectionsManager.showQuickAddMenu(e, promptText);
-            
-            // Reset processing state after a short delay
-            setTimeout(() => {
-                newBtn.dataset.processing = 'false';
-            }, 300);
-            
-        } catch (error) {
-            console.error('Quick add button error:', error);
-            newBtn.dataset.processing = 'false';
-            // Show error feedback to user
-            const originalTitle = newBtn.title;
-            newBtn.title = 'Error adding to collection. Please try again.';
-            setTimeout(() => {
-                newBtn.title = originalTitle;
-            }, 2000);
-        }
-    });
-    
-    // Update styling
-    updateQuickAddButtonColor(newBtn, theme);
-    
-    // Replace old button with new one
-    btn.parentNode.replaceChild(newBtn, btn);
-    return newBtn;
-}
 // Modified switchTab function
 function switchTab(tab) {
     // Get all tab content elements
@@ -7912,34 +7584,6 @@ function createPromptBox(promptText, isHistory = false, isInCollection = false, 
 
     return promptBox;
 }
-    function addStandardButtons(topRow, bottomRow, promptText, promptBox, isHistory, isInCollection, collectionId) {
-    // Add Copy button
-    const copyBtn = document.createElement('button');
-    copyBtn.classList.add('copy-btn');
-    copyBtn.id = 'copy-' + Math.random().toString(36).substr(2, 9);
-    copyBtn.innerHTML = '<img src="icons/copy-icon.svg" alt="Copy"><span>Copy</span>';
-    copyBtn.addEventListener('click', function() {
-        const cleanText = promptText.replace(/<span class="highlight">|<\/span>/g, '');
-        copyToClipboard(cleanText, this);
-    });
-    topRow.appendChild(copyBtn);
-
-    // Add other action buttons (Variations, Extend, Shorten)
-    addActionButtons(topRow, promptText);
-
-    // Add Preview button only if not a video prompt
-    const isVideo = promptText.includes('--video') ||
-                   (localStorage.getItem('videoMode') === 'true' && !isHistory);
-    
-    if (!isVideo) {
-        addPreviewButton(bottomRow, promptText, promptBox);
-    }
-
-    // Add collection button if not in collection
-    if (!isInCollection) {
-        addQuickAddButton(bottomRow, promptText);
-    }
-}
 // Add this new function to handle the move to collection menu
 function loadSavedPreviews() {
     try {
@@ -7951,62 +7595,6 @@ function loadSavedPreviews() {
     }
 }
 
-// Save previews to localStorage with error handling
-function savePreview(promptText, imageUrl) {
-    try {
-        const savedPreviews = loadSavedPreviews();
-        savedPreviews[promptText] = imageUrl;
-        localStorage.setItem('previews', JSON.stringify(savedPreviews));
-        
-        // Also save the disabled state
-        const disabledButtons = JSON.parse(localStorage.getItem('disabledButtons')) || {};
-        disabledButtons[promptText] = true;
-        localStorage.setItem('disabledButtons', JSON.stringify(disabledButtons));
-    } catch (error) {
-        console.error('Error saving preview:', error);
-    }
-}
-
-// Enhanced function to display cached preview
-function displayCachedPreview(imageUrl, container, button, promptText) {
-    // First check if required elements exist
-    if (!container) {
-        console.warn('Preview container not found');
-        return;
-    }
-
-    // Clear container content
-    container.innerHTML = '';
-
-    // Create and set up image
-    const img = document.createElement('img');
-    img.src = imageUrl;
-    img.alt = 'Preview image';
-    img.classList.add('preview-image-prompt');
-    
-    // Add error handling for image loading
-    img.onerror = () => {
-        console.error('Failed to load preview image');
-        container.innerHTML = '<p>Failed to load preview image</p>';
-        // Remove from cache if image fails to load
-        const savedPreviews = loadSavedPreviews();
-        delete savedPreviews[promptText];
-        localStorage.setItem('previews', JSON.stringify(savedPreviews));
-    };
-    
-    container.appendChild(img);
-    
-    // Only update button state if button exists
-    if (button) {
-        button.disabled = true;
-        button.classList.add('disabled');
-        
-        // Update disabled state
-        const disabledButtons = JSON.parse(localStorage.getItem('disabledButtons')) || {};
-        disabledButtons[promptText] = true;
-        localStorage.setItem('disabledButtons', JSON.stringify(disabledButtons));
-    }
-}
 // Enhanced function to restore previews when displaying prompts
 function restorePreviews() {
     const savedPreviews = loadSavedPreviews();
@@ -8037,21 +7625,6 @@ function restorePreviews() {
         }
     });
 }
-function cleanupOldPreviews() {
-    try {
-        const savedPreviews = loadSavedPreviews();
-        const maxPreviews = 50; // Adjust based on needs
-        
-        if (Object.keys(savedPreviews).length > maxPreviews) {
-            const entries = Object.entries(savedPreviews);
-            const newPreviews = Object.fromEntries(entries.slice(-maxPreviews));
-            localStorage.setItem('previews', JSON.stringify(newPreviews));
-        }
-    } catch (error) {
-        console.error('Error cleaning up previews:', error);
-    }
-}
-setInterval(cleanupOldPreviews, 1000 * 60 * 60); 
 // Enhanced preview image loading and caching
 async function generatePreview(promptText, promptBox) {
     let imageContainer = promptBox.querySelector('.image-container');
@@ -9044,27 +8617,6 @@ function updateQuickAddButtonColor(btn, theme) {
 }
 
 
-// Function to update all quick add buttons
-function updateAllQuickAddButtons(theme) {
-    document.querySelectorAll('.quick-add-btn').forEach(btn => {
-        updateQuickAddButtonColor(btn, theme);
-    });
-}
-// Helper function to convert hex to RGB
-function hexToRgb(hex) {
-    hex = hex.replace('#', '');
-    
-    if (hex.length === 3) {
-        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    
-    return { r, g, b };
-}
-
 // Helper function to convert hex to RGB (keep existing function)
 function hexToRgb(hex) {
     hex = hex.replace('#', '');
@@ -9233,100 +8785,6 @@ async function loadWeeklyPrompts() {
 }
 
 
-// Separate function to handle display logic
-function createWeeklyPromptCard(prompt) {
-   const promptCard = createThemeAwarePromptBox(prompt.prompt, false);
-    promptCard.classList.add('weekly-prompt-card');
-
-    // Add the image
-    const promptImage = document.createElement('img');
-    promptImage.src = prompt.image;
-    promptImage.loading = 'lazy';
-    promptCard.appendChild(promptImage);
-
-    // Add the prompt text - store full prompt with parameters
-    const promptText = document.createElement('p');
-    promptText.classList.add('weekly-prompt-text');
-    promptText.setAttribute('data-full-prompt', prompt.prompt); // Store complete prompt including parameters
-    promptText.textContent = prompt.prompt;
-    promptCard.appendChild(promptText);
-
-    // Add the button container
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
-
-    // Create top row for main action buttons
-    const topRow = document.createElement('div');
-    topRow.classList.add('top-row');
-
-    // Add Copy button with modified copy functionality
-    const copyBtn = document.createElement('button');
-    copyBtn.classList.add('copy-btn');
-    copyBtn.innerHTML = '<img src="icons/copy-icon.svg" alt="Copy"><span>Copy</span>';
-    copyBtn.addEventListener('click', function() {
-        // Get the full prompt including parameters
-        const fullPrompt = promptText.getAttribute('data-full-prompt');
-        copyToClipboard(fullPrompt, this, true); // Added isWeeklyPrompt parameter
-    });
-    topRow.appendChild(copyBtn);
-
-    // Rest of the button creation code remains the same...
-    const variationsBtn = document.createElement('button');
-    variationsBtn.classList.add('variations-btn');
-    variationsBtn.innerHTML = '<img src="icons/variations-icon.svg" alt="Variations"><span>Variations</span>';
-    variationsBtn.addEventListener('click', () => {
-        const fullPrompt = promptText.getAttribute('data-full-prompt');
-        generatePromptVariations(fullPrompt);
-    });
-    topRow.appendChild(variationsBtn);
-
-    // Add Extend button
-    const extendBtn = document.createElement('button');
-    extendBtn.classList.add('extend-btn');
-    extendBtn.innerHTML = '<img src="icons/extend-icon.svg" alt="Extend"><span>Extend</span>';
-    const fullPrompt = promptText.getAttribute('data-full-prompt');
-    if (fullPrompt.length >= 800) {
-        extendBtn.disabled = true;
-        extendBtn.classList.add('disabled');
-    }
-    extendBtn.addEventListener('click', () => generateExtendedPrompts(fullPrompt));
-    topRow.appendChild(extendBtn);
-
-    // Add Shorten button
-    const shortenBtn = document.createElement('button');
-    shortenBtn.classList.add('shorten-btn');
-    shortenBtn.innerHTML = '<img src="icons/shorten-icon.svg" alt="Shorten"><span>Shorten</span>';
-    if (fullPrompt.length < 170) {
-        shortenBtn.disabled = true;
-        shortenBtn.classList.add('disabled');
-    }
-    shortenBtn.addEventListener('click', () => generateShortenedPrompts(fullPrompt));
-    topRow.appendChild(shortenBtn);
-
-    // Create bottom row for collection button
-    const bottomRow = document.createElement('div');
-    bottomRow.classList.add('bottom-row');
-
-    // Add Star (Add to Collection) button
-    const quickAddBtn = document.createElement('button');
-    quickAddBtn.className = 'quick-add-btn';
-    const isInAnyCollection = collectionsManager.isPromptInAnyCollection(fullPrompt);
-    quickAddBtn.innerHTML = isInAnyCollection ? 
-        '<img src="icons/star-filled.svg" alt="In Collection">' :
-        '<img src="icons/star-empty.svg" alt="Add to Collection">';
-    quickAddBtn.title = isInAnyCollection ? 'In Collection' : 'Add to Collection';
-    quickAddBtn.addEventListener('click', (e) => {
-        collectionsManager.showQuickAddMenu(e, fullPrompt);
-    });
-    bottomRow.appendChild(quickAddBtn);
-
-    // Add rows to button container
-    buttonContainer.appendChild(topRow);
-    buttonContainer.appendChild(bottomRow);
-    promptCard.appendChild(buttonContainer);
-
-    return promptCard;
-}
 function showUpgradePrompt(container, isPreviewLimit = false) {
     // Clear existing content
     container.innerHTML = '';

@@ -25,13 +25,18 @@ const DIST = path.join(ROOT, 'dist');
 /**
  * Everything the extension needs at runtime, and nothing else.
  *
- * An allowlist, not an ignore list: the previous upload shipped `screenshots/`
- * -- 5 MB of store listing images -- inside the extension, because the rule was
- * "zip what is there".
+ * An allowlist, not an ignore list, so that adding a stray file to the project
+ * root does not silently ship it -- a filename-listing script had been going out
+ * inside `previews/` for months.
+ *
+ * `screenshots/` looks like store-listing material and is not: docs.html embeds
+ * 28 of them. Dropping it produced a docs page of broken images, which is why
+ * verifyReferences below now exists.
  */
 const INCLUDE = [
   'icons',
   'previews',
+  'screenshots',
   'scripts',
   'styles',
   'docs.html',
@@ -69,6 +74,68 @@ function copyInto(dest) {
   }
 }
 
+/**
+ * Every local file the packaged pages ask for must be in the package.
+ *
+ * Without this the failure is silent: the zip builds, the extension loads, and
+ * the broken image only shows up if someone opens that particular page. Paths
+ * built at runtime (`${...}`) cannot be checked here and are skipped.
+ */
+function verifyReferences(dir) {
+  /**
+   * Patterns are per file type on purpose. Running the CSS `url()` pattern over
+   * JavaScript matches `pcApi.url('/credits')` and reports the API as a missing
+   * file.
+   *
+   * In JS, a reference counts only if it ends in an asset extension AND contains
+   * a slash. The option tables carry bare filenames -- `preview:
+   * 'cartoon-preview.png'` -- whose folder is supplied at runtime, so those are
+   * data rather than paths and cannot be resolved here.
+   */
+  const PATTERNS = {
+    '.html': [/(?:src|href)\s*=\s*["']([^"']+)["']/g],
+    '.css': [/url\(\s*["']?([^"')]+)["']?\s*\)/g],
+    '.js': [/["']([^"'`]*\/[^"'`]*\.(?:png|jpe?g|webp|gif|svg|css|html))["']/g],
+  };
+  const missing = [];
+
+  const walk = (d) => {
+    for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+      const full = path.join(d, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      const patterns = PATTERNS[path.extname(entry.name)];
+      if (!patterns) continue;
+
+      const text = fs.readFileSync(full, 'utf8');
+      for (const pattern of patterns) {
+        for (const m of text.matchAll(pattern)) {
+          const ref = m[1];
+          if (!ref || ref.includes('${') || /^(https?:|data:|blob:|chrome-extension:|mailto:|#)/.test(ref)) {
+            continue;
+          }
+          const clean = decodeURIComponent(ref.split(/[?#]/)[0]);
+          // Relative to the file, then to the package root: pages sit at the
+          // root but stylesheets reference assets as ../icons/...
+          const candidates = [
+            path.resolve(path.dirname(full), clean),
+            path.resolve(dir, clean.replace(/^(\.\.\/)+/, '')),
+          ];
+          if (!candidates.some((c) => fs.existsSync(c))) {
+            missing.push(`${path.relative(dir, full)} -> ${ref}`);
+          }
+        }
+      }
+    }
+  };
+
+
+  walk(dir);
+  return missing;
+}
+
 /** Zips with PowerShell, so the build needs nothing installed. */
 function zip(dir, out) {
   rmrf(out);
@@ -96,6 +163,14 @@ function build(name) {
 
   copyInto(out);
   fs.writeFileSync(path.join(out, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+
+  const missing = verifyReferences(out);
+  if (missing.length) {
+    console.error(`\n${name}: ${missing.length} reference(s) point outside the package:`);
+    for (const m of missing.slice(0, 20)) console.error(`  ${m}`);
+    if (missing.length > 20) console.error(`  ... and ${missing.length - 20} more`);
+    throw new Error(`${name} package is incomplete`);
+  }
 
   const zipPath = path.join(DIST, `prompt-catalyst-${name}-${manifest.version}.zip`);
   zip(out, zipPath);
