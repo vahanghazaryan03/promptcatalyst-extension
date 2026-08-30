@@ -450,3 +450,36 @@ code {
         page-break-inside: avoid;
     }
 }
+/* --- Scrollbars ---------------------------------------------------------
+ *
+ * The sidebar had a themed scrollbar; the page itself did not, so the long
+ * documentation column scrolled behind the default pale one. Same 8px treatment
+ * as the popup, so the two pages match.
+ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* Firefox: see the note in popup.css -- scrollbar-color would disable the
+ * rules above in Chrome, so it is fenced to engines without the pseudo-element. */
+@supports not selector(::-webkit-scrollbar) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+    }
+}

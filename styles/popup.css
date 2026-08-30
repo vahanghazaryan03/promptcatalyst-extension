@@ -6413,3 +6413,71 @@ p {
 .google-signin-btn svg {
     flex-shrink: 0;
 }
+
+/* --- Scrollbars ---------------------------------------------------------
+ *
+ * Individual panels had themed scrollbars; the document itself never did, so
+ * the one scrollbar always on screen was the raw Chrome default -- pale, wide,
+ * with arrow buttons -- against a dark popup. These are the same 8px/--border
+ * scrollbars used by .theme-options and .collections-*, applied as the default
+ * so any scrollable area matches. More specific rules still win where a
+ * component styles its own.
+ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/*
+ * Firefox has no ::-webkit-scrollbar; scrollbar-width/-color are its equivalent.
+ *
+ * Deliberately fenced off from Chrome. scrollbar-color inherits, and an element
+ * that has it set makes Chrome ignore ::-webkit-scrollbar entirely -- so putting
+ * it on html silently reverted every component scrollbar in this file to the
+ * default (.theme-options went from 8px back to 16px). Applying it only where
+ * the pseudo-element is unsupported keeps each engine on the mechanism it
+ * actually honours.
+ */
+@supports not selector(::-webkit-scrollbar) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+    }
+}
+
+/*
+ * While a modal is open, the page behind it must not scroll.
+ *
+ * The overlays are position:fixed and cover the viewport, but .container stays
+ * its full height underneath, so a scrollbar sat alongside every dialog
+ * scrolling content nobody could see.
+ *
+ * :has() is unsupported before Firefox 121; there the scrollbar simply remains,
+ * which is what happens today.
+ */
+body:has(.login-popup.active),
+body:has(.help-popup.active),
+body:has(.rate-popup.active),
+body:has(.extend-popup.active),
+body:has(.profile-popup.active),
+body:has(.premium-upsell-popup.active) {
+    overflow: hidden;
+}
