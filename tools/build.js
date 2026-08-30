@@ -17,7 +17,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
+const { zipDirectory } = require('./zip');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -136,18 +136,16 @@ function verifyReferences(dir) {
   return missing;
 }
 
-/** Zips with PowerShell, so the build needs nothing installed. */
+/**
+ * Zips with our own writer rather than PowerShell.
+ *
+ * Compress-Archive writes entry names with backslashes on Windows, which the
+ * ZIP spec forbids. Chrome accepted such an archive; addons.mozilla.org rejected
+ * it with "Invalid file name in archive: icons\chevron-down.svg". See tools/zip.js.
+ */
 function zip(dir, out) {
   rmrf(out);
-  execFileSync(
-    'powershell.exe',
-    [
-      '-NoProfile',
-      '-Command',
-      `Compress-Archive -Path '${dir}\\*' -DestinationPath '${out}' -Force`,
-    ],
-    { stdio: 'pipe' },
-  );
+  zipDirectory(dir, out);
 }
 
 function build(name) {
