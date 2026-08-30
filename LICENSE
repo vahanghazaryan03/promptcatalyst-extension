@@ -1,0 +1,11 @@
+Copyright (c) 2024-2026 Prompt Catalyst. All rights reserved.
+
+This repository is published so that the design and implementation of the
+Prompt Catalyst browser extension can be read and reviewed.
+
+No licence is granted to use, copy, modify, merge, publish, distribute,
+sublicense or sell this software or any part of it. Reading the code is
+welcome; reusing it is not permitted without written permission.
+
+The extension is distributed to end users through the Chrome Web Store and
+Firefox Add-ons, under those stores' terms.
