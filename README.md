@@ -8,7 +8,7 @@ image-to-prompt analyser, inline preview generation, collections and history.
 **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/prompt-catalyst/)** ·
 **[promptcatalyst.ai](https://promptcatalyst.ai)**
 
-Live on both stores — ~2,400 users, 4.68★ on Chrome. Manifest V3, no build
+Live on both stores — peaked at ~2,400 users, 4.68★ on Chrome. Manifest V3, no build
 framework, no runtime dependencies.
 
 Developed since 2024. This repository's history starts in August 2026, when the
