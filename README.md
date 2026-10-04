@@ -11,6 +11,9 @@ image-to-prompt analyser, inline preview generation, collections and history.
 Live on both stores — ~2,400 users, 4.68★ on Chrome. Manifest V3, no build
 framework, no runtime dependencies.
 
+Developed since 2024. This repository's history starts in August 2026, when the
+extension moved to the new API and Supabase auth.
+
 ![The extension](screenshots/Screenshot%202024-12-22%20130024.png)
 
 | | |
